@@ -20,11 +20,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         void onItemSelect(Result model);
     }
 
-
     private OnMovieItemSelectedListener mListener;
 
     private List<Result> mItems = new ArrayList<>();
 
+    public MovieAdapter() {
+    }
 
     public MovieAdapter(OnMovieItemSelectedListener listener) {
         mListener = listener;
@@ -56,21 +57,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Result result = mItems.get(position);
-        // TODO : 데이터를 뷰홀더에 표시하시오
-
-
-//        String url = result.getPoster_path();
-//        String posterPath = "https://image.tmdb.org/t/p/w500" + url;
-//        Glide.with(holder.itemView)
-//                .load(posterPath)
-//                .centerCrop()
-//                .placeholder(R.mipmap.ic_launcher)
-//                .into(holder.binding.movieImage);
-
-
         holder.binding.setResult(result);
-
-
 
     }
 

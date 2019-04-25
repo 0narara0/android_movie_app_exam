@@ -4,33 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/frag_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            <android.support.v7.widget.SearchView
-                android:id="@+id/search_view"
-                app:defaultQueryHint="검색어를 입력하세요"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
+            android:elevation="4dp">
         </android.support.v7.widget.Toolbar>
 
-        <fragment
-            android:id="@+id/frag_movie"
-            android:name="com.narara.android_movie_app_exam.MovieFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/frag_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <fragment
+                android:id="@+id/frag_movie"
+                android:name="com.narara.android_movie_app_exam.ui.HomeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/menu_bottom" />
+
+    </LinearLayout>
 
 </layout>
