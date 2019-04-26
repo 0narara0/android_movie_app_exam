@@ -7,6 +7,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +16,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.narara.android_movie_app_exam.utils.MovieAdapter;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
@@ -21,6 +24,9 @@ import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentMovieBinding;
 import com.narara.android_movie_app_exam.models.Result;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -44,6 +50,7 @@ public class MovieFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override
@@ -51,6 +58,8 @@ public class MovieFragment extends Fragment {
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false);
         mModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+
+
 
         if (getArguments() != null) {
             if (getArguments().getString("id").equals("popular")) {
@@ -81,17 +90,22 @@ public class MovieFragment extends Fragment {
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
 
-        mModel.results.observe(this, new Observer<List<Result>>() {
-            @Override
-            public void onChanged(@Nullable List<Result> results) {
+        mModel.results.observe(this, results -> {
 
-                movieAdapter.setItems(results);
-                mBinding.recyclerView.setAdapter(movieAdapter);
-                mBinding.swipeRefreshLayout.setRefreshing(false);
-                movieAdapter.notifyDataSetChanged();
+            movieAdapter.setItems(results);
+            mBinding.recyclerView.setAdapter(movieAdapter);
+            mBinding.swipeRefreshLayout.setRefreshing(false);
+            movieAdapter.notifyDataSetChanged();
 
-            }
         });
+
+        mBinding.fab.setOnClickListener(view -> {
+            List<Result> resultList = new ArrayList<>();
+            resultList = mModel.results.getValue();
+            Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
+            movieAdapter.setItems(resultList);
+        });
+
         return mBinding.getRoot();
     }
 

@@ -54,4 +54,6 @@ dependencies {
 
     implementation "android.arch.navigation:navigation-fragment:$nav_version"
     implementation "android.arch.navigation:navigation-ui:$nav_version"
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

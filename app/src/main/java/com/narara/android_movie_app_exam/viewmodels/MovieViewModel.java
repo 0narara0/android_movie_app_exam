@@ -1,9 +1,14 @@
 package com.narara.android_movie_app_exam.viewmodels;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import android.arch.persistence.room.Room;
+import android.support.annotation.NonNull;
 
 import com.narara.android_movie_app_exam.TMDB_Service;
+import com.narara.android_movie_app_exam.localdb.AppDatabase;
 import com.narara.android_movie_app_exam.models.Movie;
 import com.narara.android_movie_app_exam.models.Result;
 
@@ -16,9 +21,35 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MovieViewModel extends ViewModel {
+public class MovieViewModel extends AndroidViewModel {
+
     public MutableLiveData<List<Result>> results = new MutableLiveData<>();
-    //public MutableLiveData<List<Result>> filteredResults = new MutableLiveData<>();
+
+    private AppDatabase mDb;
+
+    public MovieViewModel(@NonNull Application application) {
+        super(application);
+        mDb = Room.databaseBuilder(application,
+                AppDatabase.class, "database-name")
+                .allowMainThreadQueries()
+                .build();
+    }
+
+    public void completeChanged(Result favorite, boolean isChecked) {
+        if (isChecked) {
+            mDb.favoritesDao().insertAll(favorite);
+        } else {
+            mDb.favoritesDao().deleteFavorite(favorite);
+        }
+    }
+
+    public void deleteFavorite(Result favorite) {
+        mDb.favoritesDao().deleteFavorite(favorite);
+    }
+
+    public LiveData<List<Result>> favorites() {
+        return mDb.favoritesDao().getFavorite();
+    }
 
     // Retrofit
     private Retrofit retrofit = new Retrofit.Builder()
@@ -27,6 +58,7 @@ public class MovieViewModel extends ViewModel {
             .build();
 
     private TMDB_Service service = retrofit.create(TMDB_Service.class);
+
 
     public void fetchSearch(String search) {
         service.getMovies(search).enqueue(new Callback<Movie>() {
@@ -77,23 +109,7 @@ public class MovieViewModel extends ViewModel {
     }
 
     public void fetchTop() {
-       service.getTopMovies().enqueue(new Callback<Movie>() {
-           @Override
-           public void onResponse(Call<Movie> call, Response<Movie> response) {
-               if (response.body() != null) {
-                   results.setValue(response.body().getResults());
-               }
-           }
-
-           @Override
-           public void onFailure(Call<Movie> call, Throwable t) {
-
-           }
-       });
-    }
-
-    public void fetchUpcoming() {
-        service.getUpcomingMovies().enqueue(new Callback<Movie>() {
+        service.getTopMovies().enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.body() != null) {
@@ -107,4 +123,23 @@ public class MovieViewModel extends ViewModel {
             }
         });
     }
+
+    public void fetchUpcoming() {
+        service.getUpcomingMovies().enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.body() != null) {
+                    results.setValue(response.body().getResults());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+        });
+    }
+
+
 }

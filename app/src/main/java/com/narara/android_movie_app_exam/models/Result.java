@@ -1,13 +1,21 @@
 
 package com.narara.android_movie_app_exam.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
+@Entity
 public class Result implements Serializable {
+    public Result() {
+    }
 
-    private int vote_count;
+    @PrimaryKey
     private int id;
+    private int vote_count;
     private boolean video;
     private double vote_average;
     private String title;
@@ -133,4 +141,50 @@ public class Result implements Serializable {
         this.release_date = release_date;
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Result{");
+        sb.append("id=").append(id);
+        sb.append(", vote_count=").append(vote_count);
+        sb.append(", video=").append(video);
+        sb.append(", vote_average=").append(vote_average);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", popularity=").append(popularity);
+        sb.append(", poster_path='").append(poster_path).append('\'');
+        sb.append(", original_language='").append(original_language).append('\'');
+        sb.append(", original_title='").append(original_title).append('\'');
+        sb.append(", genre_ids=").append(genre_ids);
+        sb.append(", backdrop_path='").append(backdrop_path).append('\'');
+        sb.append(", adult=").append(adult);
+        sb.append(", overview='").append(overview).append('\'');
+        sb.append(", release_date='").append(release_date).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Result result = (Result) o;
+        return id == result.id &&
+                vote_count == result.vote_count &&
+                video == result.video &&
+                Double.compare(result.vote_average, vote_average) == 0 &&
+                Double.compare(result.popularity, popularity) == 0 &&
+                adult == result.adult &&
+                Objects.equals(title, result.title) &&
+                Objects.equals(poster_path, result.poster_path) &&
+                Objects.equals(original_language, result.original_language) &&
+                Objects.equals(original_title, result.original_title) &&
+                Objects.equals(genre_ids, result.genre_ids) &&
+                Objects.equals(backdrop_path, result.backdrop_path) &&
+                Objects.equals(overview, result.overview) &&
+                Objects.equals(release_date, result.release_date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, vote_count, video, vote_average, title, popularity, poster_path, original_language, original_title, genre_ids, backdrop_path, adult, overview, release_date);
+    }
 }

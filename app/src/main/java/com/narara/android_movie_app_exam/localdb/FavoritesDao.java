@@ -8,17 +8,18 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.narara.android_movie_app_exam.models.Favorites;
+import com.narara.android_movie_app_exam.models.Result;
 
 import java.util.List;
 
 @Dao
 public interface FavoritesDao {
-    @Query("SELECT * FROM favorites")
-    LiveData<List<Favorites>> getCartItems();
+    @Query("SELECT * FROM result")
+    LiveData<List<Result>> getFavorite();
 
     @Insert
-    void insertAll(Favorites... favorites);
+    void insertAll(Result result);
 
     @Delete
-    void deleteItem(Favorites favorites);
+    void deleteFavorite(Result result);
 }

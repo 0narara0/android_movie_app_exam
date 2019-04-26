@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentSearchBinding;
@@ -54,11 +55,23 @@ public class SearchFragment extends Fragment {
         mBinding = DataBindingUtil.bind(view);
         mModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
-        final MovieAdapter adapter = new MovieAdapter(result -> requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frag_movie, DetailFragment.newInstance(result))
-                .addToBackStack(null)
-                .commit());
+
+       // mBinding.setViewModel(mModel);
+       // mBinding.setLifecycleOwner(this);
+
+        final MovieAdapter adapter = new MovieAdapter(new MovieAdapter.OnMovieItemSelectedListener() {
+            @Override
+            public void onItemSelect(Result result) {
+                //Toast.makeText(requireContext(), "onItemSelect" + result.toString(), Toast.LENGTH_SHORT).show();
+                SearchFragment.this.requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frag_container, DetailFragment.newInstance(result))
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+        mBinding.recyclerView.setAdapter(adapter);
+        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
         mModel.results.observe(this, results -> {
             mBinding.recyclerView.setAdapter(adapter);

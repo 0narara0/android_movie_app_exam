@@ -115,11 +115,8 @@ public class OpenFragment extends Fragment {
                         .commit();
                 return true;
 
-
-            case R.id.action_sort:
-                return true;
         }
-        return true;
+        return false;
     }
 
 
