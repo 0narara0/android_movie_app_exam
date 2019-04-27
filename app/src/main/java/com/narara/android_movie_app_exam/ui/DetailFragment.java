@@ -67,6 +67,16 @@ public class DetailFragment extends Fragment {
         MovieViewModel model = ViewModelProviders.of(this).get(MovieViewModel.class);
         binding.setDetail(mResult);
 
+        // 체크박스
+        model.favorites().observe(this, favorites -> {
+            if (favorites != null && favorites.contains(mResult)) {
+                binding.favoriteCheck.setChecked(true);
+            }
+            binding.favoriteCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                model.completeChanged(mResult, isChecked);
+            });
+        });
+
     }
 
     @Override

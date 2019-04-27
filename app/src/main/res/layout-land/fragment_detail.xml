@@ -41,14 +41,29 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/text_view_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@{detail.title}"
-                android:textSize="30sp" />
+                <TextView
+                    android:id="@+id/text_view_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{detail.title}"
+                    android:textSize="30sp"
+                    tools:text="제목" />
+
+                <CheckBox
+                    android:id="@+id/favorite_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:button="@drawable/selector_favorite" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/text_view_release_date"
@@ -56,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@{detail.release_date}"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:text="개봉일" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -67,7 +83,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@{detail.overview}" />
+                    android:text="@{detail.overview}"
+                    tools:text="줄거리" />
 
             </ScrollView>
 

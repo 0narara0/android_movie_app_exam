@@ -2,9 +2,11 @@
 package com.narara.android_movie_app_exam.models;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +25,7 @@ public class Result implements Serializable {
     private String poster_path;
     private String original_language;
     private String original_title;
+    @Ignore
     private List<Integer> genre_ids = null;
     private String backdrop_path;
     private boolean adult;
