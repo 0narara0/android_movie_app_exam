@@ -6,7 +6,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -170,20 +169,7 @@ public class Result implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Result result = (Result) o;
-        return id == result.id &&
-                vote_count == result.vote_count &&
-                video == result.video &&
-                Double.compare(result.vote_average, vote_average) == 0 &&
-                Double.compare(result.popularity, popularity) == 0 &&
-                adult == result.adult &&
-                Objects.equals(title, result.title) &&
-                Objects.equals(poster_path, result.poster_path) &&
-                Objects.equals(original_language, result.original_language) &&
-                Objects.equals(original_title, result.original_title) &&
-                Objects.equals(genre_ids, result.genre_ids) &&
-                Objects.equals(backdrop_path, result.backdrop_path) &&
-                Objects.equals(overview, result.overview) &&
-                Objects.equals(release_date, result.release_date);
+        return id == result.id;
     }
 
     @Override
