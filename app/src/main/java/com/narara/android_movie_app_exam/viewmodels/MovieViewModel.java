@@ -49,7 +49,8 @@ public class MovieViewModel extends AndroidViewModel {
         mDb.favoritesDao().deleteFavorite(favorite);
     }
 
-    public LiveData<List<Result>> favorites() {
+    // 즐겨찾기
+   public LiveData<List<Result>> favorites() {
         return mDb.favoritesDao().getFavorite();
     }
 

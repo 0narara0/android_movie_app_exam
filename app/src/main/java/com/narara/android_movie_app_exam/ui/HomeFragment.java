@@ -42,17 +42,21 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FragmentHomeBinding binding = DataBindingUtil.bind(view);
-        binding.buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frag_container,new OpenFragment())
-                        .addToBackStack(null)
-                        .commit();
-
-            }
-        });
+        //FragmentHomeBinding binding = DataBindingUtil.bind(view);
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.home_container, MovieFragment.newInstance("popular"))
+                .addToBackStack(null)
+                .commit();
+//        binding.buttonNext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                requireActivity().getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.frag_movie,MovieFragment.newInstance("popular"))
+//                        .addToBackStack(null)
+//                        .commit();
+//
+//            }
+//        });
     }
 }

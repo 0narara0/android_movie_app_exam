@@ -30,6 +30,7 @@ import java.util.List;
 public class DetailFragment extends Fragment {
     public static final String KEY_MOVIE = "MOVIE";
     private Result mResult;
+    private FragmentDetailBinding mBinding;
 
 
     public DetailFragment() {
@@ -57,6 +58,24 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        mBinding = DataBindingUtil.bind(view);
+
+        MovieViewModel model = ViewModelProviders.of(this).get(MovieViewModel.class);
+        mBinding.setDetail(mResult);
+
+
+        // 체크박스
+        model.favorites().observe(this, new Observer<List<Result>>() {
+            @Override
+            public void onChanged(@Nullable List<Result> favorites) {
+                                        // result 와 db 비교
+                if (favorites != null && favorites.contains(mResult)) {
+                    mBinding.favoriteCheck.setChecked(true);
+                }
+                mBinding.favoriteCheck.setOnCheckedChangeListener((buttonView, isChecked)
+                        -> model.completeChanged(mResult, isChecked));
+            }
+        });
 
         return view;
 
@@ -65,22 +84,10 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FragmentDetailBinding binding = DataBindingUtil.bind(view);
 
-        MovieViewModel model = ViewModelProviders.of(this).get(MovieViewModel.class);
-        binding.setDetail(mResult);
-
-        // 체크박스
-        model.favorites().observe(this, favorites -> {
-            if (favorites != null && favorites.contains(mResult)) {
-                binding.favoriteCheck.setChecked(true);
-            }
-            binding.favoriteCheck.setOnCheckedChangeListener((buttonView, isChecked)
-                    -> model.completeChanged(mResult, isChecked));
-        });
 
         // ShareButton
-        binding.buttonShare.setOnClickListener(v -> {
+        mBinding.buttonShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, mResult.getTitle());

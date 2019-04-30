@@ -2,6 +2,7 @@ package com.narara.android_movie_app_exam;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import com.narara.android_movie_app_exam.models.Result;
 import com.narara.android_movie_app_exam.ui.AlarmFragment;
 import com.narara.android_movie_app_exam.ui.FavoriteFragment;
 import com.narara.android_movie_app_exam.ui.HomeFragment;
+import com.narara.android_movie_app_exam.ui.MovieFragment;
+import com.narara.android_movie_app_exam.ui.OpenFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,14 +24,21 @@ public class MainActivity extends AppCompatActivity {
         final ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolBar);
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frag_container, OpenFragment.newInstance())
+                .commit();
+
         createNotificationChannel();
+
+        Intent intent = new Intent(this, DetailActivity.class);
+
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
 
             switch (menuItem.getItemId()) {
                 case R.id.home_menu:
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frag_container, HomeFragment.newInstance())
+                            .replace(R.id.frag_container, OpenFragment.newInstance())
                             .commit();
                     return true;
                 case R.id.favorite_menu:

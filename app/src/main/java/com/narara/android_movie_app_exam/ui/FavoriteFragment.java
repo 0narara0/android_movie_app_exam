@@ -111,6 +111,7 @@ public class FavoriteFragment extends Fragment {
         private OnFavoriteClickListener mListener;
 
         private List<Result> mItems = new ArrayList<>();
+        // Collections.synchronizedList(new ArrayList());
 
         public FavoriteAdapter() {
         }
@@ -125,6 +126,7 @@ public class FavoriteFragment extends Fragment {
         }
 
         public void updateItems(List<Result> items) {
+            // synchronized(mItems)
             new Thread(() -> {
                 final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new ListDiffCallback(this.mItems, items));
 

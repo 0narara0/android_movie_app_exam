@@ -22,15 +22,7 @@
             android:id="@+id/frag_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <fragment
-                android:id="@+id/frag_movie"
-                android:name="com.narara.android_movie_app_exam.ui.HomeFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </FrameLayout>
+            android:layout_weight="1"/>
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation_view"

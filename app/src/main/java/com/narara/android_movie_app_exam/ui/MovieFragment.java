@@ -2,6 +2,7 @@ package com.narara.android_movie_app_exam.ui;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.narara.android_movie_app_exam.DetailActivity;
 import com.narara.android_movie_app_exam.utils.MovieAdapter;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 import com.narara.android_movie_app_exam.R;
@@ -70,13 +72,17 @@ public class MovieFragment extends Fragment {
         mBinding.setViewModel(mModel);
         mBinding.setLifecycleOwner(this);
 
-        final MovieAdapter movieAdapter = new MovieAdapter(result -> {
+        final MovieAdapter movieAdapter = new MovieAdapter(new MovieAdapter.OnMovieItemSelectedListener() {
+            @Override
+            public void onItemSelect(Result result) {
 
-            MovieFragment.this.requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frag_container, DetailFragment.newInstance(result))
-                    .addToBackStack(null)
-                    .commit();
+//            MovieFragment.this.requireActivity().getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.frag_container, DetailFragment.newInstance(result))
+//                    .addToBackStack(null)
+//                    .commit();
+
+            }
         });
         mBinding.recyclerView.setAdapter(movieAdapter);
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
