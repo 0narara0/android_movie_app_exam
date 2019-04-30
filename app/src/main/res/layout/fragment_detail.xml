@@ -37,30 +37,36 @@
                     app:loadImage="@{detail.poster_path}"
                     tools:src="@tools:sample/avatars" />
 
+                <TextView
+                    android:id="@+id/text_view_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{detail.title}"
+                    android:textSize="30sp"
+                    tools:text="제목" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/text_view_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@{detail.title}"
-                        android:textSize="30sp"
-                        tools:text="제목" />
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/favorite_check"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
-                        android:layout_marginEnd="8dp"
                         android:button="@drawable/selector_favorite" />
 
+                    <ImageButton
+                        android:id="@+id/button_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_share_white_24dp"
+                        android:tint="@color/colorAccent" />
                 </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/text_view_release_date"

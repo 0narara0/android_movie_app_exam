@@ -1,5 +1,6 @@
 package com.narara.android_movie_app_exam.ui;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -14,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.narara.android_movie_app_exam.MainActivity;
 import com.narara.android_movie_app_exam.models.Result;
@@ -21,17 +24,15 @@ import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentDetailBinding;
 
+import java.util.List;
+
 
 public class DetailFragment extends Fragment {
     public static final String KEY_MOVIE = "MOVIE";
-    Result mResult;
+    private Result mResult;
 
 
     public DetailFragment() {
-        // Required empty public constructor
-
-        // 메뉴를 가진다고 알려줌
-        setHasOptionsMenu(true);
     }
 
     public static DetailFragment newInstance(Result result) {
@@ -55,7 +56,9 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        return view;
 
     }
 
@@ -72,34 +75,20 @@ public class DetailFragment extends Fragment {
             if (favorites != null && favorites.contains(mResult)) {
                 binding.favoriteCheck.setChecked(true);
             }
-            binding.favoriteCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                model.completeChanged(mResult, isChecked);
-            });
+            binding.favoriteCheck.setOnCheckedChangeListener((buttonView, isChecked)
+                    -> model.completeChanged(mResult, isChecked));
+        });
+
+        // ShareButton
+        binding.buttonShare.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, mResult.getTitle());
+            startActivity(Intent.createChooser(shareIntent, "movie"));
         });
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_share, menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_share:
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, mResult.getTitle());
-                startActivity(Intent.createChooser(shareIntent, "movie"));
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
 }
 

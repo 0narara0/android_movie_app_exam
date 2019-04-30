@@ -1,16 +1,12 @@
 package com.narara.android_movie_app_exam.ui;
 
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.view.LayoutInflater;
@@ -26,7 +22,6 @@ import com.narara.android_movie_app_exam.models.Result;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -60,7 +55,6 @@ public class MovieFragment extends Fragment {
         mModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
 
-
         if (getArguments() != null) {
             if (getArguments().getString("id").equals("popular")) {
                 mModel.fetchPopular();
@@ -76,18 +70,16 @@ public class MovieFragment extends Fragment {
         mBinding.setViewModel(mModel);
         mBinding.setLifecycleOwner(this);
 
-        final MovieAdapter movieAdapter = new MovieAdapter(new MovieAdapter.OnMovieItemSelectedListener() {
-            @Override
-            public void onItemSelect(Result result) {
-                MovieFragment.this.requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frag_movie, DetailFragment.newInstance(result))
-                        .addToBackStack(null)
-                        .commit();
-            }
+        final MovieAdapter movieAdapter = new MovieAdapter(result -> {
+
+            MovieFragment.this.requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frag_container, DetailFragment.newInstance(result))
+                    .addToBackStack(null)
+                    .commit();
         });
         mBinding.recyclerView.setAdapter(movieAdapter);
-        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
 
 
         mModel.results.observe(this, results -> {
@@ -95,13 +87,11 @@ public class MovieFragment extends Fragment {
             movieAdapter.setItems(results);
             mBinding.recyclerView.setAdapter(movieAdapter);
             mBinding.swipeRefreshLayout.setRefreshing(false);
-            movieAdapter.notifyDataSetChanged();
 
         });
 
         mBinding.fab.setOnClickListener(view -> {
-            List<Result> resultList = new ArrayList<>();
-            resultList = mModel.results.getValue();
+            List<Result> resultList = mModel.results.getValue();
             Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
             movieAdapter.setItems(resultList);
         });
@@ -117,9 +107,20 @@ public class MovieFragment extends Fragment {
         mBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mModel.fetchUpcoming();
+                if (getArguments() != null) {
+                    if (getArguments().getString("id").equals("popular")) {
+                        mModel.fetchPopular();
+                    } else if (getArguments().getString("id").equals("now")) {
+                        mModel.fetchNow();
+                    } else if (getArguments().getString("id").equals("top")) {
+                        mModel.fetchTop();
+                    } else if (getArguments().getString("id").equals("upcoming")) {
+                        mModel.fetchUpcoming();
+                    }
+                }
             }
         });
+
     }
 
 

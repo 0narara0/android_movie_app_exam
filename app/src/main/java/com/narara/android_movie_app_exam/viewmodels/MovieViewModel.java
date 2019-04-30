@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 
 import com.narara.android_movie_app_exam.TMDB_Service;
 import com.narara.android_movie_app_exam.localdb.AppDatabase;
+import com.narara.android_movie_app_exam.models.Favorites;
 import com.narara.android_movie_app_exam.models.Movie;
 import com.narara.android_movie_app_exam.models.Result;
 
@@ -25,7 +26,7 @@ public class MovieViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<Result>> results = new MutableLiveData<>();
 
-    private AppDatabase mDb;
+    public AppDatabase mDb;
 
     public MovieViewModel(@NonNull Application application) {
         super(application);
@@ -42,6 +43,7 @@ public class MovieViewModel extends AndroidViewModel {
             mDb.favoritesDao().deleteFavorite(favorite);
         }
     }
+
 
     public void deleteFavorite(Result favorite) {
         mDb.favoritesDao().deleteFavorite(favorite);
@@ -140,6 +142,8 @@ public class MovieViewModel extends AndroidViewModel {
             }
         });
     }
+
+
 
 
 }

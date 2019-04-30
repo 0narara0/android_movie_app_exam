@@ -1,6 +1,7 @@
 package com.narara.android_movie_app_exam.ui;
 
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -63,20 +65,20 @@ public class FavoriteFragment extends Fragment {
         MovieViewModel viewModel = ViewModelProviders.of(requireActivity())
                 .get(MovieViewModel.class);
 
-        FavoriteAdapter adapter = new FavoriteAdapter(new FavoriteAdapter.OnFavoriteClickListener() {
-            @Override
-            public void onFavoriteClicked(Result model) {
-                // DetailFragment 이동
-                // viewModel.lastPlace = model;
-                //EventBus.getDefault().post(model);
-                Toast.makeText(requireContext(), "onFavoriteClicked" + model.toString(), Toast.LENGTH_SHORT).show();
-            }
+        FavoriteAdapter adapter = new FavoriteAdapter(model -> {
+            // DetailFragment 이동
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frag_container, DetailFragment.newInstance(model))
+                    .addToBackStack(null)
+                    .commit();
         });
 
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT) {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
             }
 
@@ -90,8 +92,14 @@ public class FavoriteFragment extends Fragment {
 
 
         mBinding.recyclerView.setAdapter(adapter);
+        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
 
         viewModel.favorites().observe(this, adapter::updateItems);
+
+        mBinding.fab.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frag_container, new SearchFragment())
+                .addToBackStack(null)
+                .commit());
 
     }
 
@@ -141,6 +149,7 @@ public class FavoriteFragment extends Fragment {
             });
             return viewHolder;
         }
+
 
         @Override
         public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
