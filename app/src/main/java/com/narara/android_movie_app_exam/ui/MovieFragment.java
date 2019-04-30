@@ -76,11 +76,11 @@ public class MovieFragment extends Fragment {
             @Override
             public void onItemSelect(Result result) {
 
-//            MovieFragment.this.requireActivity().getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.frag_container, DetailFragment.newInstance(result))
-//                    .addToBackStack(null)
-//                    .commit();
+            MovieFragment.this.requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frag_container, DetailFragment.newInstance(result))
+                    .addToBackStack(null)
+                    .commit();
 
             }
         });

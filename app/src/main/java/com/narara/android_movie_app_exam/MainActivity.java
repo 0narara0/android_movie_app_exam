@@ -9,11 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.narara.android_movie_app_exam.databinding.ActivityMainBinding;
-import com.narara.android_movie_app_exam.models.Result;
 import com.narara.android_movie_app_exam.ui.AlarmFragment;
 import com.narara.android_movie_app_exam.ui.FavoriteFragment;
-import com.narara.android_movie_app_exam.ui.HomeFragment;
-import com.narara.android_movie_app_exam.ui.MovieFragment;
 import com.narara.android_movie_app_exam.ui.OpenFragment;
 
 public class MainActivity extends AppCompatActivity {

@@ -69,7 +69,7 @@
                 android:indeterminate="false"
                 android:numStars="5"
                 android:progress="3"
-                android:rating="@{(float)result.vote_average}"
+                android:rating="@{(float)result.vote_average/2}"
                 android:layout_margin="8dp"
                 android:progressTint="#FFC107" />
 
