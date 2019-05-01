@@ -75,7 +75,18 @@ public class AlarmFragment extends Fragment {
         binding.buttonRemove.setOnClickListener(v -> {
             notificationHide();
         });
+        binding.buttonAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlarmDialog(v);
+            }
+        });
 
+    }
+
+    public void showAlarmDialog(View view) {
+        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        timePickerFragment.show(getChildFragmentManager(), "timePicker");
     }
 
     public static void showNotification(Context context, String content, int id) {
