@@ -77,6 +77,7 @@ public class AlarmFragment extends Fragment {
         });
 
     }
+
     public static void showNotification(Context context, String content, int id) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -98,7 +99,6 @@ public class AlarmFragment extends Fragment {
 // notificationId is a unique int for each notification that you must define
         notificationManager.notify(id, builder.build());
     }
-
 
 
     public void notificationHide() {

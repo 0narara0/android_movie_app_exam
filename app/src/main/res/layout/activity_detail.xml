@@ -10,12 +10,6 @@
         android:id="@+id/frag_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
-        <fragment
-            android:id="@+id/frag_detail"
-            android:name="com.narara.android_movie_app_exam.ui.DetailFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
     </FrameLayout>
 
 </LinearLayout>

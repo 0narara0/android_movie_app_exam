@@ -2,6 +2,7 @@ package com.narara.android_movie_app_exam;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -9,11 +10,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.narara.android_movie_app_exam.databinding.ActivityMainBinding;
+import com.narara.android_movie_app_exam.models.Result;
 import com.narara.android_movie_app_exam.ui.AlarmFragment;
 import com.narara.android_movie_app_exam.ui.FavoriteFragment;
+import com.narara.android_movie_app_exam.ui.MovieFragment;
 import com.narara.android_movie_app_exam.ui.OpenFragment;
+import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AppCompatActivity {
+    private Result mResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         createNotificationChannel();
-
-        Intent intent = new Intent(this, DetailActivity.class);
-
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
 
@@ -52,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
+
     }
 
 
@@ -72,4 +80,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ResultEvent event) {
+        mResult = event.result;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+//    @Override
+//    public void onMovieItemClicked(Result result) {
+//        Intent intent = new Intent(this, DetailActivity.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("result", result);
+//        intent.putExtra("bundle", bundle);
+//        startActivity(intent);
+//    }
 }

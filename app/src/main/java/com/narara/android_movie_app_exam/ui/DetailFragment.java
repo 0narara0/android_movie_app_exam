@@ -19,10 +19,16 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.narara.android_movie_app_exam.MainActivity;
+import com.narara.android_movie_app_exam.ResultEvent;
 import com.narara.android_movie_app_exam.models.Result;
+import com.narara.android_movie_app_exam.viewmodels.DetailViewModel;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentDetailBinding;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -60,7 +66,7 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         mBinding = DataBindingUtil.bind(view);
 
-        MovieViewModel model = ViewModelProviders.of(this).get(MovieViewModel.class);
+        DetailViewModel model = ViewModelProviders.of(this).get(DetailViewModel.class);
         mBinding.setDetail(mResult);
 
 
@@ -95,6 +101,8 @@ public class DetailFragment extends Fragment {
         });
 
     }
+
+
 
 
 }

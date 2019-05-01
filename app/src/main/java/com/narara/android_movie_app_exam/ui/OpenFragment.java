@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentOpenBinding;
+import com.narara.android_movie_app_exam.models.Result;
 
 public class OpenFragment extends Fragment {
-
 
     public OpenFragment() {
         // Required empty public constructor
@@ -50,6 +50,7 @@ public class OpenFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final FragmentOpenBinding binding = DataBindingUtil.bind(view);
+
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frag_movie, MovieFragment.newInstance("popular"))
                 .addToBackStack(null)

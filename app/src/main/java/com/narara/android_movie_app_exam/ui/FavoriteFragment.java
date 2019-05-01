@@ -13,7 +13,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import com.narara.android_movie_app_exam.utils.ListDiffCallback;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FavoriteFragment extends Fragment {
@@ -67,7 +70,7 @@ public class FavoriteFragment extends Fragment {
 
         FavoriteAdapter adapter = new FavoriteAdapter(model -> {
             // DetailFragment 이동
-            requireActivity().getSupportFragmentManager().beginTransaction()
+            FavoriteFragment.this.requireActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frag_container, DetailFragment.newInstance(model))
                     .addToBackStack(null)
                     .commit();
@@ -94,12 +97,41 @@ public class FavoriteFragment extends Fragment {
         mBinding.recyclerView.setAdapter(adapter);
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
 
-        viewModel.favorites().observe(this, adapter::updateItems);
+        viewModel.favorites().observe(this, new Observer<List<Result>>() {
+            @Override
+            public void onChanged(@Nullable List<Result> items) {
+                adapter.updateItems(items);
 
-        mBinding.fab.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frag_container, new SearchFragment())
-                .addToBackStack(null)
-                .commit());
+                mBinding.fab.setOnClickListener(v -> {
+                    List<Result> resultList = items;
+                    Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
+                    adapter.setItems(resultList);
+                });
+
+
+            }
+        });
+
+        mBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                if (!TextUtils.isEmpty(query)) {
+                    viewModel.fetchSearch(query);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
+
+
+
 
     }
 

@@ -12,7 +12,6 @@ import com.narara.android_movie_app_exam.localdb.AppDatabase;
 import com.narara.android_movie_app_exam.models.Movie;
 import com.narara.android_movie_app_exam.models.Result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,24 +20,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
-public class MovieViewModel extends AndroidViewModel {
-
+public class DetailViewModel extends AndroidViewModel {
     public MutableLiveData<List<Result>> results = new MutableLiveData<>();
-    public MutableLiveData<List<Result>> filteredResults = new MutableLiveData<>();
-    private List<Result> resultList = new ArrayList<>();
-
-
 
     public AppDatabase mDb;
 
-    public MovieViewModel(@NonNull Application application) {
+    public DetailViewModel(@NonNull Application application) {
         super(application);
         mDb = Room.databaseBuilder(application,
                 AppDatabase.class, "database-name")
                 .allowMainThreadQueries()
                 .build();
-
     }
 
     public void completeChanged(Result favorite, boolean isChecked) {
@@ -55,8 +47,7 @@ public class MovieViewModel extends AndroidViewModel {
     }
 
     // 즐겨찾기
-   public LiveData<List<Result>> favorites() {
-
+    public LiveData<List<Result>> favorites() {
         return mDb.favoritesDao().getFavorite();
     }
 
@@ -149,23 +140,5 @@ public class MovieViewModel extends AndroidViewModel {
             }
         });
     }
-
-    public void search(String query) {
-        filteredResults.setValue(mDb.favoritesDao().getFavorite().getValue());
-
-        List<Result> filteredList = new ArrayList<>();
-        for (int i = 0; i < resultList.size(); i++) {
-            Result result = resultList.get(i);
-            if (result.getTitle().toLowerCase().trim()
-                    .contains(query.toLowerCase().trim())) {
-                filteredList.add(result);
-            }
-        }
-
-        filteredResults.setValue(filteredList);
-    }
-
-
-
 
 }
