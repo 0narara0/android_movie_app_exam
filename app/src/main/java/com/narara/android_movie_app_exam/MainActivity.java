@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.favorite_menu:
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frag_container, FavoriteFragment.newInstance())
+                            .addToBackStack(null)
                             .commit();
                     return true;
                 case R.id.alarm_menu:
@@ -79,32 +80,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(ResultEvent event) {
-        mResult = event.result;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-
-//    @Override
-//    public void onMovieItemClicked(Result result) {
-//        Intent intent = new Intent(this, DetailActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("result", result);
-//        intent.putExtra("bundle", bundle);
-//        startActivity(intent);
-//    }
 }

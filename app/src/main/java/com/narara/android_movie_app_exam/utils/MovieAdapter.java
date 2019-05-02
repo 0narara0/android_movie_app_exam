@@ -1,20 +1,15 @@
 package com.narara.android_movie_app_exam.utils;
 
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.narara.android_movie_app_exam.R;
-import com.narara.android_movie_app_exam.ResultEvent;
 import com.narara.android_movie_app_exam.databinding.ItemMovieBinding;
 import com.narara.android_movie_app_exam.models.Result;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,27 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 
-import com.narara.android_movie_app_exam.MainActivity;
-import com.narara.android_movie_app_exam.ResultEvent;
-import com.narara.android_movie_app_exam.models.Result;
-import com.narara.android_movie_app_exam.viewmodels.DetailViewModel;
-import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentDetailBinding;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.narara.android_movie_app_exam.models.Result;
+import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
 import java.util.List;
 
@@ -66,7 +53,7 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         mBinding = DataBindingUtil.bind(view);
 
-        DetailViewModel model = ViewModelProviders.of(this).get(DetailViewModel.class);
+        MovieViewModel model = ViewModelProviders.of(this).get(MovieViewModel.class);
         mBinding.setDetail(mResult);
 
 

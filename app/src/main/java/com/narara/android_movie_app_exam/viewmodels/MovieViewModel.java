@@ -26,8 +26,8 @@ public class MovieViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<Result>> results = new MutableLiveData<>();
     public MutableLiveData<List<Result>> filteredResults = new MutableLiveData<>();
-    private List<Result> resultList = new ArrayList<>();
-
+    public List<Result> resultList = new ArrayList<>();
+    //public int currentPage = 1;
 
 
     public AppDatabase mDb;
@@ -56,7 +56,6 @@ public class MovieViewModel extends AndroidViewModel {
 
     // 즐겨찾기
    public LiveData<List<Result>> favorites() {
-
         return mDb.favoritesDao().getFavorite();
     }
 
@@ -84,7 +83,6 @@ public class MovieViewModel extends AndroidViewModel {
             }
         });
     }
-
     public void fetchPopular() {
         service.getPopularMovies().enqueue(new Callback<Movie>() {
             @Override
@@ -149,11 +147,24 @@ public class MovieViewModel extends AndroidViewModel {
             }
         });
     }
+    /*
+    * public void search(String query) {
+        List<Product> filteredList = new ArrayList<>();
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            if (product.getTitle().toLowerCase().trim()
+                    .contains(query.toLowerCase().trim())) {
+                filteredList.add(product);
+            }
+        }
+
+        filteredProducts.setValue(filteredList);
+    }
+    * */
 
     public void search(String query) {
-        filteredResults.setValue(mDb.favoritesDao().getFavorite().getValue());
-
         List<Result> filteredList = new ArrayList<>();
+
         for (int i = 0; i < resultList.size(); i++) {
             Result result = resultList.get(i);
             if (result.getTitle().toLowerCase().trim()
@@ -161,11 +172,7 @@ public class MovieViewModel extends AndroidViewModel {
                 filteredList.add(result);
             }
         }
-
         filteredResults.setValue(filteredList);
     }
-
-
-
 
 }

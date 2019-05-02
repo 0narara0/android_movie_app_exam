@@ -41,7 +41,6 @@ public class DetailViewModel extends AndroidViewModel {
         }
     }
 
-
     public void deleteFavorite(Result favorite) {
         mDb.favoritesDao().deleteFavorite(favorite);
     }

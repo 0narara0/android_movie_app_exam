@@ -1,17 +1,10 @@
 package com.narara.android_movie_app_exam.ui;
 
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -69,7 +62,7 @@ public class AlarmFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentAlarmBinding binding = FragmentAlarmBinding.bind(view);
         binding.buttonCreate.setOnClickListener(v -> {
-            showNotification(requireContext(), "어쩌구 저쩌구", 1);
+            showNotification(requireContext(), "미개봉 영화", 1);
 
         });
         binding.buttonRemove.setOnClickListener(v -> {

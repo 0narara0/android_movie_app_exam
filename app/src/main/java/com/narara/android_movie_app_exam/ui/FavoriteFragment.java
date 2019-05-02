@@ -3,6 +3,7 @@ package com.narara.android_movie_app_exam.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,8 +20,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.narara.android_movie_app_exam.DetailActivity;
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentFavoriteBinding;
 import com.narara.android_movie_app_exam.databinding.ItemFavoriteBinding;
@@ -70,10 +71,9 @@ public class FavoriteFragment extends Fragment {
 
         FavoriteAdapter adapter = new FavoriteAdapter(model -> {
             // DetailFragment 이동
-            FavoriteFragment.this.requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frag_container, DetailFragment.newInstance(model))
-                    .addToBackStack(null)
-                    .commit();
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
+            intent.putExtra("result", model);
+            startActivity(intent);
         });
 
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
@@ -101,6 +101,8 @@ public class FavoriteFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<Result> items) {
                 adapter.updateItems(items);
+                viewModel.resultList = items;
+                viewModel.filteredResults.setValue(items);
 
                 mBinding.fab.setOnClickListener(v -> {
                     List<Result> resultList = items;
@@ -109,24 +111,33 @@ public class FavoriteFragment extends Fragment {
                 });
 
 
+
             }
         });
 
-        mBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        viewModel.filteredResults.observe(this, new Observer<List<Result>>() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public void onChanged(@Nullable List<Result> results) {
+                mBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        if (!TextUtils.isEmpty(query)) {
+                            viewModel.search(query);
+                            adapter.setItems(viewModel.filteredResults.getValue());
+                        }
+                        return true;
+                    }
 
-                if (!TextUtils.isEmpty(query)) {
-                    viewModel.fetchSearch(query);
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return false;
+                    }
+                });
             }
         });
+
+
+
 
 
 
