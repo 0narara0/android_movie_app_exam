@@ -21,55 +21,17 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class DetailActivity extends AppCompatActivity {
 
-//    private Result mResult;
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onMessageEvent(ResultEvent event) {
-//        mResult = event.result;
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-
-
-
-        Bundle bundle = getIntent().getExtras();
-        Result result = (Result) bundle.getSerializable("result");
+        Result result = (Result) getIntent().getSerializableExtra("result");
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frag_container, DetailFragment.newInstance(result))
                 .commit();
 
-       Toast.makeText(this, "" + bundle.toString(), Toast.LENGTH_LONG).show();
-//        Log.d(TAG, "onCreate: " + bundle);
-//        DetailFragment fragment = new DetailFragment();
-//        fragment.setArguments(mResult);
-
-
-//        if (result != null) {
-//
-//        }
-
-
     }
-
-
-
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        EventBus.getDefault().unregister(this);
-//    }
-
 
 }

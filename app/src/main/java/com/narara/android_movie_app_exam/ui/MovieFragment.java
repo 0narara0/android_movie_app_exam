@@ -86,28 +86,10 @@ public class MovieFragment extends Fragment {
         final MovieAdapter movieAdapter = new MovieAdapter(new MovieAdapter.OnMovieItemSelectedListener() {
             @Override
             public void onItemSelect(Result result) {
-//                EventBus.getDefault().post(new ResultEvent(result));
-//                Intent intent = new Intent(getActivity(), DetailActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("result", result);
-//                intent.putExtra("bundle", bundle);
-//                startActivity(intent);
-
-//
-//                if (mListener != null) {
-//                    mListener.onMovieItemClicked(result);
-//                }
-////                Bundle bundle = new Bundle();
-////                bundle.putSerializable("result", result);
-////                intent.putExtra("bundle", bundle);
-
-            MovieFragment.this.requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frag_container, DetailFragment.newInstance(result))
-                    .addToBackStack(null)
-                    .commit();
-
-
+                EventBus.getDefault().post(new ResultEvent(result));
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("result", result);
+                startActivity(intent);
             }
         });
         mBinding.recyclerView.setAdapter(movieAdapter);
