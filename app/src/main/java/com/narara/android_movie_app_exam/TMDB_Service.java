@@ -13,7 +13,9 @@ public interface TMDB_Service {
 
     @GET("3/movie/popular?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
     Call<Movie> getPopularMovies();
-    //Call<Movie> getPopularMovies(@Query("page") int page);
+
+    @GET("3/movie/popular?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
+    Call<Movie> getPopularMovies(@Query("page") int page);
 
     @GET("3/movie/now_playing?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
     Call<Movie> getNowMovies();

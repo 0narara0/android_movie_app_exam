@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,16 +90,17 @@ public class MovieFragment extends Fragment {
         });
         mBinding.recyclerView.setAdapter(movieAdapter);
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
-//        mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                boolean isScrollable = mBinding.recyclerView.canScrollVertically(1);
-//                if (!isScrollable) {
-//                    mModel.fetchPopular();
-//                }
-//            }
-//        });
+        mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                boolean isScrollable = mBinding.recyclerView.canScrollVertically(1);
+                if (!isScrollable) {
+                    //mModel.fetchPopular();
+                    mModel.fetchPopular(mModel.currentPage + 1);
+                }
+            }
+        });
 
 
         mModel.results.observe(this, results -> {
