@@ -4,6 +4,7 @@ package com.narara.android_movie_app_exam.ui;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.narara.android_movie_app_exam.MainActivity;
 import com.narara.android_movie_app_exam.R;
+import com.narara.android_movie_app_exam.SplashActivity;
 import com.narara.android_movie_app_exam.databinding.FragmentAlarmBinding;
 
 
@@ -68,39 +70,37 @@ public class AlarmFragment extends Fragment {
         binding.buttonRemove.setOnClickListener(v -> {
             notificationHide();
         });
-        binding.buttonAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlarmDialog(v);
-            }
-        });
+        binding.buttonAlarm.setOnClickListener(v -> showAlarmDialog(v));
 
     }
 
     public void showAlarmDialog(View view) {
         TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.show(getChildFragmentManager(), "timePicker");
+        showNotification(requireContext(), "미개봉 영화", 1);
     }
 
     public static void showNotification(Context context, String content, int id) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, SplashActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        long[] vibrate = {0, 100, 200, 300};
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("노티 타이틀")
+                .setContentTitle("영화 알림")
                 .setContentText(content)
                 .setSound(RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_NOTIFICATION))
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Much longer text that cannot fit one line..."))
+                        .bigText(content))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
+                .setColor(Color.RED)
+                .setVibrate(vibrate)
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-// notificationId is a unique int for each notification that you must define
         notificationManager.notify(id, builder.build());
     }
 
