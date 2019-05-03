@@ -60,25 +60,21 @@ public class OpenFragment extends Fragment {
                     case 0:
                         requireActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frag_movie, MovieFragment.newInstance("popular"))
-                                .addToBackStack(null)
                                 .commit();
                         break;
                     case 1:
                         requireActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frag_movie, MovieFragment.newInstance("now"))
-                                .addToBackStack(null)
                                 .commit();
                         break;
                     case 2:
                         requireActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frag_movie, MovieFragment.newInstance("top"))
-                                .addToBackStack(null)
                                 .commit();
                         break;
                     case 3:
                         requireActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frag_movie, MovieFragment.newInstance("upcoming"))
-                                .addToBackStack(null)
                                 .commit();
                         break;
                 }

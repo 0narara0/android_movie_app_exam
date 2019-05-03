@@ -2,6 +2,7 @@ package com.narara.android_movie_app_exam.ui;
 
 
 import android.app.PendingIntent;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,9 +21,16 @@ import com.narara.android_movie_app_exam.MainActivity;
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.SplashActivity;
 import com.narara.android_movie_app_exam.databinding.FragmentAlarmBinding;
+import com.narara.android_movie_app_exam.models.Result;
+import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class AlarmFragment extends Fragment {
+    private MovieViewModel mModel;
 
 //    private static final String ARG_PARAM1 = "param1";
 //    private static final String ARG_PARAM2 = "param2";
@@ -55,6 +63,9 @@ public class AlarmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alarm, container, false);
+        mModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+
+
 
         return view;
     }
@@ -63,6 +74,13 @@ public class AlarmFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentAlarmBinding binding = FragmentAlarmBinding.bind(view);
+
+//        List<Result> dateList = new ArrayList<>();
+//        dateList = mModel.results.getValue();
+//        Collections.sort(dateList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
+//        //movieAdapter.setItems(resultList);
+
+
         binding.buttonCreate.setOnClickListener(v -> {
             showNotification(requireContext(), "미개봉 영화", 1);
 

@@ -1,6 +1,7 @@
 package com.narara.android_movie_app_exam.ui;
 
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -48,17 +49,21 @@ public class FavoriteFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         mBinding = DataBindingUtil.bind(view);
+        mBinding.fab.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -97,43 +102,46 @@ public class FavoriteFragment extends Fragment {
         mBinding.recyclerView.setAdapter(adapter);
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
 
-        viewModel.favorites().observe(this, new Observer<List<Result>>() {
-            @Override
-            public void onChanged(@Nullable List<Result> items) {
-                adapter.updateItems(items);
-                viewModel.resultList = items;
-                viewModel.filteredResults.setValue(items);
+        viewModel.favorites().observe(this, items -> {
+            adapter.updateItems(items);
+            viewModel.resultList = items;
+            viewModel.filteredResults.setValue(items);
 
-                mBinding.fab.setOnClickListener(v -> {
-                    List<Result> resultList = items;
-                    Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
-                    adapter.setItems(resultList);
-                });
+            mBinding.fab.setOnClickListener(v -> {
+                List<Result> resultList = items;
+                Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
+                adapter.setItems(resultList);
+            });
 
 
 
-            }
         });
 
-        viewModel.filteredResults.observe(this, new Observer<List<Result>>() {
-            @Override
-            public void onChanged(@Nullable List<Result> results) {
-                mBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        if (!TextUtils.isEmpty(query)) {
-                            viewModel.search(query);
-                            adapter.setItems(viewModel.filteredResults.getValue());
-                        }
-                        return true;
-                    }
+        viewModel.filteredResults.observe(this, results -> {
+            mBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return false;
+                @SuppressLint("RestrictedApi")
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    mBinding.fab.setVisibility(View.GONE);
+                    if (!TextUtils.isEmpty(query)) {
+                        viewModel.search(query);
+                        adapter.setItems(viewModel.filteredResults.getValue());
                     }
-                });
-            }
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+
+
+            mBinding.searchView.setOnCloseListener(() -> {
+                adapter.setItems(viewModel.resultList);
+                return false;
+        });
         });
 
 

@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.favorite_menu:
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frag_container, FavoriteFragment.newInstance())
-                            .addToBackStack(null)
                             .commit();
                     return true;
                 case R.id.alarm_menu:
