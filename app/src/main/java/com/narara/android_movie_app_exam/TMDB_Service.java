@@ -10,6 +10,9 @@ public interface TMDB_Service {
     @GET("3/search/movie?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
     Call<Movie> getMovies(@Query("query") String query);
 
+    @GET("3/search/movie?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
+    Call<Movie> getMovies(@Query("query") String query, @Query("page") int page);
+
 
     @GET("3/movie/popular?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
     Call<Movie> getPopularMovies();
@@ -20,10 +23,19 @@ public interface TMDB_Service {
     @GET("3/movie/now_playing?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
     Call<Movie> getNowMovies();
 
+    @GET("3/movie/now_playing?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
+    Call<Movie> getNowMovies(@Query("page") int page);
+
     @GET("3/movie/top_rated?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
     Call<Movie> getTopMovies();
 
+    @GET("3/movie/now_playing?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
+    Call<Movie> getTopMovies(@Query("page") int page);
+
     @GET("3/movie/upcoming?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
     Call<Movie> getUpcomingMovies();
+
+    @GET("3/movie/now_playing?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
+    Call<Movie> getUpcomingMovies(@Query("page") int page);
 
 }

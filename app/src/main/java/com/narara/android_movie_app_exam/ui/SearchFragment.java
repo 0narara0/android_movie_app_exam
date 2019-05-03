@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -44,10 +45,10 @@ public class SearchFragment extends Fragment {
 
         final MovieAdapter adapter = new MovieAdapter(result ->
                 SearchFragment.this.requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frag_container, DetailFragment.newInstance(result))
-                .addToBackStack(null)
-                .commit());
+                        .beginTransaction()
+                        .replace(R.id.frag_container, DetailFragment.newInstance(result))
+                        .addToBackStack(null)
+                        .commit());
         mBinding.recyclerView.setAdapter(adapter);
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
@@ -71,6 +72,17 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextSubmit(String s) {
                 if (!TextUtils.isEmpty(s)) {
                     mModel.fetchSearch(s);
+                    mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                            boolean isScrollable = recyclerView.canScrollVertically(1);
+
+                            if (!isScrollable) {
+                                mModel.fetchSearch(s, mModel.currentPage + 1);
+                            }
+                        }
+                    });
+
                 }
                 return true;
             }

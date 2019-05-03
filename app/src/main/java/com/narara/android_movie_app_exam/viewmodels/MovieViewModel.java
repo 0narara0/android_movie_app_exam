@@ -83,6 +83,26 @@ public class MovieViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public void fetchSearch(String search, int page) {
+        service.getMovies(search, page).enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.body() != null) {
+                    List<Result> pageList = new ArrayList<>();
+                    results.setValue(response.body().getResults());
+                    pageList.addAll(results.getValue());
+                }
+                currentPage = page;
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void fetchPopular() {
         service.getPopularMovies().enqueue(new Callback<Movie>() {
             @Override
@@ -135,6 +155,25 @@ public class MovieViewModel extends AndroidViewModel {
         });
     }
 
+    public void fetchNow(int page) {
+        service.getNowMovies(page).enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.body() != null) {
+                    List<Result> pageList = new ArrayList<>();
+                    results.setValue(response.body().getResults());
+                    pageList.addAll(results.getValue());
+                }
+                currentPage = page;
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void fetchTop() {
         service.getTopMovies().enqueue(new Callback<Movie>() {
             @Override
@@ -142,6 +181,25 @@ public class MovieViewModel extends AndroidViewModel {
                 if (response.body() != null) {
                     results.setValue(response.body().getResults());
                 }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void fetchTop(int page) {
+        service.getTopMovies(page).enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.body() != null) {
+                    List<Result> pageList = new ArrayList<>();
+                    results.setValue(response.body().getResults());
+                    pageList.addAll(results.getValue());
+                }
+                currentPage = page;
             }
 
             @Override
@@ -159,6 +217,25 @@ public class MovieViewModel extends AndroidViewModel {
                     results.setValue(response.body().getResults());
 
                 }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void fetchUpcoming(int page) {
+        service.getUpcomingMovies(page).enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.body() != null) {
+                    List<Result> pageList = new ArrayList<>();
+                    results.setValue(response.body().getResults());
+                    pageList.addAll(results.getValue());
+                }
+                currentPage = page;
             }
 
             @Override

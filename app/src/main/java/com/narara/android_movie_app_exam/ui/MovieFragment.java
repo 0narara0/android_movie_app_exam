@@ -93,11 +93,20 @@ public class MovieFragment extends Fragment {
         mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
                 boolean isScrollable = mBinding.recyclerView.canScrollVertically(1);
                 if (!isScrollable) {
-                    //mModel.fetchPopular();
-                    mModel.fetchPopular(mModel.currentPage + 1);
+
+                    if (getArguments() != null) {
+                        if (getArguments().getString("id").equals("popular")) {
+                            mModel.fetchPopular(mModel.currentPage + 1);
+                        } else if (getArguments().getString("id").equals("now")) {
+                            mModel.fetchNow(mModel.currentPage + 1);
+                        } else if (getArguments().getString("id").equals("top")) {
+                            mModel.fetchTop(mModel.currentPage + 1);
+                        } else if (getArguments().getString("id").equals("upcoming")) {
+                            mModel.fetchUpcoming(mModel.currentPage + 1);
+                        }
+                    }
                 }
             }
         });
