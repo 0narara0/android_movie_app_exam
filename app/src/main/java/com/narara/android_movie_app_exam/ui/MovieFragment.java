@@ -88,10 +88,15 @@ public class MovieFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-
         mBinding.recyclerView.setAdapter(movieAdapter);
+        mModel.results.observe(this, results -> {
+            movieAdapter.setItems(results);
+            mBinding.swipeRefreshLayout.setRefreshing(false);
+        });
+
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
+
+
         mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -116,16 +121,6 @@ public class MovieFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-
-
-        mModel.results.observe(this, results -> {
-
-            movieAdapter.setItems(results);
-            mBinding.recyclerView.setAdapter(movieAdapter);
-            mBinding.swipeRefreshLayout.setRefreshing(false);
-
-        });
-
 
         mBinding.fab.setOnClickListener(view -> {
             List<Result> resultList = mModel.results.getValue();

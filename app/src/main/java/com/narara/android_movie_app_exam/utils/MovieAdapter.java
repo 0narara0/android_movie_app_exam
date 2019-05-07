@@ -47,7 +47,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 if (mListener != null) {
                     final Result item = mItems.get(viewHolder.getAdapterPosition());
                     mListener.onItemSelect(item);
-//                    EventBus.getDefault().post(new ResultEvent(item));
                 }
             }
         });

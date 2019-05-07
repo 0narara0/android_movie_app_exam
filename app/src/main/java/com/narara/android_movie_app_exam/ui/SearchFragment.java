@@ -50,7 +50,6 @@ public class SearchFragment extends Fragment {
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
         mModel.results.observe(this, results -> {
-            mBinding.recyclerView.setAdapter(adapter);
             adapter.setItems(results);
         });
         return mBinding.getRoot();
