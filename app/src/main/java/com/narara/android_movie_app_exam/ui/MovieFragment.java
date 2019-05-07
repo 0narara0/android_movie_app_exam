@@ -18,24 +18,11 @@ import android.view.ViewGroup;
 import com.narara.android_movie_app_exam.DetailActivity;
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentMovieBinding;
-import com.narara.android_movie_app_exam.models.Result;
 import com.narara.android_movie_app_exam.utils.MovieAdapter;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
-import java.util.Collections;
-import java.util.List;
-
 
 public class MovieFragment extends Fragment {
-    public interface OnMovieItemClickListener {
-        void onMovieItemClicked(Result result);
-    }
-
-    private OnMovieItemClickListener mListener;
-
-    public void setOnMovieItemClickListener(OnMovieItemClickListener listener) {
-        this.mListener = listener;
-    }
 
     private FragmentMovieBinding mBinding;
     private MovieViewModel mModel;
@@ -65,28 +52,18 @@ public class MovieFragment extends Fragment {
         mModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
 
-        if (getArguments() != null) {
-            if (getArguments().getString("id").equals("popular")) {
-                mModel.fetchPopular(1);
-            } else if (getArguments().getString("id").equals("now")) {
-                mModel.fetchNow(1);
-            } else if (getArguments().getString("id").equals("top")) {
-                mModel.fetchTop(1);
-            } else if (getArguments().getString("id").equals("upcoming")) {
-                mModel.fetchUpcoming(1);
-            }
+        if (getArguments() != null && getArguments().getString("id") != null) {
+            String id = getArguments().getString("id");
+            mModel.fetch(id, 1);
         }
 
         mBinding.setViewModel(mModel);
         mBinding.setLifecycleOwner(this);
 
-        final MovieAdapter movieAdapter = new MovieAdapter(new MovieAdapter.OnMovieItemSelectedListener() {
-            @Override
-            public void onItemSelect(Result result) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("result", result);
-                startActivity(intent);
-            }
+        final MovieAdapter movieAdapter = new MovieAdapter(result -> {
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
+            intent.putExtra("result", result);
+            startActivity(intent);
         });
         mBinding.recyclerView.setAdapter(movieAdapter);
         mModel.results.observe(this, results -> {
@@ -103,15 +80,8 @@ public class MovieFragment extends Fragment {
                 boolean isScrollable = mBinding.recyclerView.canScrollVertically(1);
                 if (!isScrollable) {
                     if (getArguments() != null) {
-                        if (getArguments().getString("id").equals("popular")) {
-                            mModel.fetchPopular(mModel.currentPage + 1);
-                        } else if (getArguments().getString("id").equals("now")) {
-                            mModel.fetchNow(mModel.currentPage + 1);
-                        } else if (getArguments().getString("id").equals("top")) {
-                            mModel.fetchTop(mModel.currentPage + 1);
-                        } else if (getArguments().getString("id").equals("upcoming")) {
-                            mModel.fetchUpcoming(mModel.currentPage + 1);
-                        }
+                        String id = getArguments().getString("id");
+                        mModel.fetch(id, mModel.currentPage + 1);
                     }
                 }
             }
@@ -123,9 +93,7 @@ public class MovieFragment extends Fragment {
         });
 
         mBinding.fab.setOnClickListener(view -> {
-            List<Result> resultList = mModel.results.getValue();
-            Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
-            movieAdapter.setItems(resultList);
+            mModel.sort();
         });
 
         return mBinding.getRoot();
@@ -140,15 +108,8 @@ public class MovieFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (getArguments() != null) {
-                    if (getArguments().getString("id").equals("popular")) {
-                        mModel.fetchPopular(1);
-                    } else if (getArguments().getString("id").equals("now")) {
-                        mModel.fetchNow(1);
-                    } else if (getArguments().getString("id").equals("top")) {
-                        mModel.fetchTop(1);
-                    } else if (getArguments().getString("id").equals("upcoming")) {
-                        mModel.fetchUpcoming(1);
-                    }
+                    String id = getArguments().getString("id");
+                    mModel.fetch(id, 1);
                 }
             }
         });

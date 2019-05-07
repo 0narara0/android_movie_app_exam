@@ -2,7 +2,6 @@ package com.narara.android_movie_app_exam.ui;
 
 
 import android.app.PendingIntent;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,15 +20,12 @@ import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.SplashActivity;
 import com.narara.android_movie_app_exam.databinding.FragmentAlarmBinding;
 import com.narara.android_movie_app_exam.utils.MovieAdapter;
-import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
 public class AlarmFragment extends Fragment {
-    private MovieViewModel mModel;
-
 
     public AlarmFragment() {
     }
@@ -49,7 +45,6 @@ public class AlarmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alarm, container, false);
-        mModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         return view;
     }
 

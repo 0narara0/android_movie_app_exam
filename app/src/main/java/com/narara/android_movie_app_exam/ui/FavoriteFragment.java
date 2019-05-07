@@ -2,7 +2,6 @@ package com.narara.android_movie_app_exam.ui;
 
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -57,14 +56,11 @@ public class FavoriteFragment extends Fragment {
 
     }
 
-    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         mBinding = DataBindingUtil.bind(view);
-        mBinding.fab.setVisibility(View.VISIBLE);
-
         return view;
     }
 
@@ -108,9 +104,8 @@ public class FavoriteFragment extends Fragment {
             viewModel.filteredResults.setValue(items);
 
             mBinding.fab.setOnClickListener(v -> {
-                List<Result> resultList = items;
-                Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
-                adapter.setItems(resultList);
+                Collections.sort(items, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
+                adapter.setItems(items);
             });
 
 
@@ -119,7 +114,6 @@ public class FavoriteFragment extends Fragment {
         viewModel.filteredResults.observe(this, results -> {
             mBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-                @SuppressLint("RestrictedApi")
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     mBinding.fab.setVisibility(View.GONE);

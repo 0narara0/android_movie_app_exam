@@ -2,7 +2,6 @@ package com.narara.android_movie_app_exam.ui;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -28,7 +27,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -72,48 +70,41 @@ public class DetailFragment extends Fragment {
 
 
         // 체크박스
-        model.favorites().observe(this, new Observer<List<Result>>() {
-            @Override
-            public void onChanged(@Nullable List<Result> favorites) {
-                // result 와 db 비교
-                if (favorites != null && favorites.contains(mResult)) {
-                    mBinding.favoriteCheck.setChecked(true);
-                }
-                mBinding.favoriteCheck.setOnCheckedChangeListener((buttonView, isChecked)
-                        -> model.completeChanged(mResult, isChecked));
+        model.favorites().observe(this, favorites -> {
+            // result 와 db 비교
+            if (favorites != null && favorites.contains(mResult)) {
+                mBinding.favoriteCheck.setChecked(true);
             }
+            mBinding.favoriteCheck.setOnCheckedChangeListener((buttonView, isChecked)
+                    -> model.completeChanged(mResult, isChecked));
         });
 
-        model.results.observe(this, new Observer<List<Result>>() {
-            @Override
-            public void onChanged(@Nullable List<Result> results) {
+        model.results.observe(this, results -> {
 
-                AlarmManager alarm_manager = (AlarmManager) requireContext().getSystemService(ALARM_SERVICE);
+            AlarmManager alarm_manager = (AlarmManager) requireContext().getSystemService(ALARM_SERVICE);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 5);
-                calendar.set(Calendar.MINUTE, 23);
-                calendar.set(Calendar.SECOND, 10);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                long currentTimeMillis = System.currentTimeMillis();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 5);
+            calendar.set(Calendar.MINUTE, 23);
+            calendar.set(Calendar.SECOND, 10);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
-                for (int i = 0; i < results.size(); i++) {
-                    try {
-                        Date strDate = sdf.parse(results.get(i).getRelease_date());
-                        if (strDate.after(new Date())) {
-                            Intent intent = new Intent(requireActivity(), AlarmReceiver.class);
-                            intent.putExtra("date", results.get(i).getRelease_date());
-                            intent.putExtra("text", results.get(i).getTitle());
+            for (int i = 0; i < results.size(); i++) {
+                try {
+                    Date strDate = sdf.parse(results.get(i).getRelease_date());
+                    if (strDate.after(new Date())) {
+                        Intent intent = new Intent(requireActivity(), AlarmReceiver.class);
+                        intent.putExtra("date", results.get(i).getRelease_date());
+                        intent.putExtra("text", results.get(i).getTitle());
 
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), 0, intent, 0);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), 0, intent, 0);
 
-                            alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                        alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
                     }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         });

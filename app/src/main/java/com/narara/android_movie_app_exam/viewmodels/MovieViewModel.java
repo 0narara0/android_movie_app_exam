@@ -7,12 +7,13 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Room;
 import android.support.annotation.NonNull;
 
-import com.narara.android_movie_app_exam.TMDB_Service;
+import com.narara.android_movie_app_exam.TmdbService;
 import com.narara.android_movie_app_exam.localdb.AppDatabase;
 import com.narara.android_movie_app_exam.models.Movie;
 import com.narara.android_movie_app_exam.models.Result;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -65,7 +66,7 @@ public class MovieViewModel extends AndroidViewModel {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    private TMDB_Service service = retrofit.create(TMDB_Service.class);
+    private TmdbService service = retrofit.create(TmdbService.class);
 
 
     public void fetchSearch(String search) {
@@ -108,8 +109,8 @@ public class MovieViewModel extends AndroidViewModel {
         });
     }
 
-    public void fetchPopular(int page) {
-        service.getPopularMovies(page).enqueue(new Callback<Movie>() {
+    public void fetch(String id, int page) {
+        Callback<Movie> callback = new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.body() != null) {
@@ -130,80 +131,23 @@ public class MovieViewModel extends AndroidViewModel {
             public void onFailure(Call<Movie> call, Throwable t) {
 
             }
-        });
-    }
+        };
 
-    public void fetchNow(int page) {
-        service.getNowMovies(page).enqueue(new Callback<Movie>() {
-            @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (response.body() != null) {
-                    if (results.getValue() == null) {
-                        results.setValue(response.body().getResults());
-                    } else {
-                        List<Result> pageList = new ArrayList<>();
-                        pageList.addAll(results.getValue());
-                        pageList.addAll(response.body().getResults());
-                        results.setValue(pageList);
-                    }
-                    currentPage = page;
-                }
-            }
+        switch (id) {
+            case "popular":
+                service.getPopularMovies(page).enqueue(callback);
+                break;
+            case "now":
+                service.getNowMovies(page).enqueue(callback);
+                break;
+            case "top":
+                service.getTopMovies(page).enqueue(callback);
+                break;
+            case "upcoming":
+                service.getUpcomingMovies(page).enqueue(callback);
+                break;
+        }
 
-            @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void fetchTop(int page) {
-        service.getTopMovies(page).enqueue(new Callback<Movie>() {
-            @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (response.body() != null) {
-                    if (results.getValue() == null) {
-                        results.setValue(response.body().getResults());
-                    } else {
-                        List<Result> pageList = new ArrayList<>();
-                        pageList.addAll(results.getValue());
-                        pageList.addAll(response.body().getResults());
-                        results.setValue(pageList);
-                    }
-                    currentPage = page;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void fetchUpcoming(int page) {
-        service.getUpcomingMovies(page).enqueue(new Callback<Movie>() {
-            @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (response.body() != null) {
-                    if (results.getValue() == null) {
-                        results.setValue(response.body().getResults());
-                    } else {
-                        List<Result> pageList = new ArrayList<>();
-                        pageList.addAll(results.getValue());
-                        pageList.addAll(response.body().getResults());
-                        results.setValue(pageList);
-                    }
-                    currentPage = page;
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
-
-            }
-        });
     }
 
     public void search(String query) {
@@ -219,4 +163,9 @@ public class MovieViewModel extends AndroidViewModel {
         filteredResults.setValue(filteredList);
     }
 
+    public void sort() {
+        List<Result> resultList = results.getValue();
+        Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
+        results.setValue(resultList);
+    }
 }

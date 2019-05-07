@@ -41,13 +41,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_movie, parent, false);
         final MovieViewHolder viewHolder = new MovieViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    final Result item = mItems.get(viewHolder.getAdapterPosition());
-                    mListener.onItemSelect(item);
-                }
+        view.setOnClickListener(v -> {
+            if (mListener != null) {
+                final Result item = mItems.get(viewHolder.getAdapterPosition());
+                mListener.onItemSelect(item);
             }
         });
         return viewHolder;

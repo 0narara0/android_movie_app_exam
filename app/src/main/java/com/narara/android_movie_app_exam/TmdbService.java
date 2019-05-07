@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface TMDB_Service {
+public interface TmdbService {
     @GET("3/search/movie?api_key=3283241144963ba613a482242cf1c715&language=ko-KR")
     Call<Movie> getMovies(@Query("query") String query);
 
