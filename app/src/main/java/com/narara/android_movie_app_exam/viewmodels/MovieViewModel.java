@@ -88,15 +88,17 @@ public class MovieViewModel extends AndroidViewModel {
         service.getMovies(search, page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null && response.body() != null) {
-                    results.setValue(response.body().getResults());
-                } else if (response.body() != null) {
-                    List<Result> pageList = new ArrayList<>();
-                    pageList.addAll(results.getValue());
-                    pageList.addAll(response.body().getResults());
-                    results.setValue(pageList);
+                if (response.body() != null) {
+                    if (results.getValue() == null) {
+                        results.setValue(response.body().getResults());
+                    } else {
+                        List<Result> pageList = new ArrayList<>();
+                        pageList.addAll(results.getValue());
+                        pageList.addAll(response.body().getResults());
+                        results.setValue(pageList);
+                    }
+                    currentPage = page;
                 }
-                currentPage = page;
             }
 
             @Override
@@ -110,15 +112,17 @@ public class MovieViewModel extends AndroidViewModel {
         service.getPopularMovies(page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null && response.body() != null) {
-                    results.setValue(response.body().getResults());
-                } else if (response.body() != null) {
-                    List<Result> pageList = new ArrayList<>();
-                    pageList.addAll(results.getValue());
-                    pageList.addAll(response.body().getResults());
-                    results.setValue(pageList);
+                if (response.body() != null) {
+                    if (results.getValue() == null) {
+                        results.setValue(response.body().getResults());
+                    } else {
+                        List<Result> pageList = new ArrayList<>();
+                        pageList.addAll(results.getValue());
+                        pageList.addAll(response.body().getResults());
+                        results.setValue(pageList);
+                    }
+                    currentPage = page;
                 }
-                currentPage = page;
 
             }
 
@@ -133,15 +137,17 @@ public class MovieViewModel extends AndroidViewModel {
         service.getNowMovies(page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null && response.body() != null) {
-                    results.setValue(response.body().getResults());
-                } else if (response.body() != null) {
-                    List<Result> pageList = new ArrayList<>();
-                    pageList.addAll(results.getValue());
-                    pageList.addAll(response.body().getResults());
-                    results.setValue(pageList);
+                if (response.body() != null) {
+                    if (results.getValue() == null) {
+                        results.setValue(response.body().getResults());
+                    } else {
+                        List<Result> pageList = new ArrayList<>();
+                        pageList.addAll(results.getValue());
+                        pageList.addAll(response.body().getResults());
+                        results.setValue(pageList);
+                    }
+                    currentPage = page;
                 }
-                currentPage = page;
             }
 
             @Override
@@ -155,15 +161,17 @@ public class MovieViewModel extends AndroidViewModel {
         service.getTopMovies(page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null && response.body() != null) {
-                    results.setValue(response.body().getResults());
-                } else if (response.body() != null) {
-                    List<Result> pageList = new ArrayList<>();
-                    pageList.addAll(results.getValue());
-                    pageList.addAll(response.body().getResults());
-                    results.setValue(pageList);
+                if (response.body() != null) {
+                    if (results.getValue() == null) {
+                        results.setValue(response.body().getResults());
+                    } else {
+                        List<Result> pageList = new ArrayList<>();
+                        pageList.addAll(results.getValue());
+                        pageList.addAll(response.body().getResults());
+                        results.setValue(pageList);
+                    }
+                    currentPage = page;
                 }
-                currentPage = page;
             }
 
             @Override
@@ -177,15 +185,18 @@ public class MovieViewModel extends AndroidViewModel {
         service.getUpcomingMovies(page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null && response.body() != null) {
-                    results.setValue(response.body().getResults());
-                } else if (response.body() != null) {
-                    List<Result> pageList = new ArrayList<>();
-                    pageList.addAll(results.getValue());
-                    pageList.addAll(response.body().getResults());
-                    results.setValue(pageList);
+                if (response.body() != null) {
+                    if (results.getValue() == null) {
+                        results.setValue(response.body().getResults());
+                    } else {
+                        List<Result> pageList = new ArrayList<>();
+                        pageList.addAll(results.getValue());
+                        pageList.addAll(response.body().getResults());
+                        results.setValue(pageList);
+                    }
+                    currentPage = page;
                 }
-                currentPage = page;
+
             }
 
             @Override
