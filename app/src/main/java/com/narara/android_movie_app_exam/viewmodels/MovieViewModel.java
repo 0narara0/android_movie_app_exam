@@ -88,9 +88,9 @@ public class MovieViewModel extends AndroidViewModel {
         service.getMovies(search, page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null) {
+                if (results.getValue() == null && response.body() != null) {
                     results.setValue(response.body().getResults());
-                } else {
+                } else if (response.body() != null) {
                     List<Result> pageList = new ArrayList<>();
                     pageList.addAll(results.getValue());
                     pageList.addAll(response.body().getResults());
@@ -110,9 +110,9 @@ public class MovieViewModel extends AndroidViewModel {
         service.getPopularMovies(page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null) {
+                if (results.getValue() == null && response.body() != null) {
                     results.setValue(response.body().getResults());
-                } else {
+                } else if (response.body() != null) {
                     List<Result> pageList = new ArrayList<>();
                     pageList.addAll(results.getValue());
                     pageList.addAll(response.body().getResults());
@@ -134,9 +134,9 @@ public class MovieViewModel extends AndroidViewModel {
         service.getNowMovies(page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null) {
+                if (results.getValue() == null && response.body() != null) {
                     results.setValue(response.body().getResults());
-                } else {
+                } else if (response.body() != null) {
                     List<Result> pageList = new ArrayList<>();
                     pageList.addAll(results.getValue());
                     pageList.addAll(response.body().getResults());
@@ -157,9 +157,9 @@ public class MovieViewModel extends AndroidViewModel {
         service.getTopMovies(page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null) {
+                if (results.getValue() == null && response.body() != null) {
                     results.setValue(response.body().getResults());
-                } else {
+                } else if (response.body() != null) {
                     List<Result> pageList = new ArrayList<>();
                     pageList.addAll(results.getValue());
                     pageList.addAll(response.body().getResults());
@@ -180,9 +180,9 @@ public class MovieViewModel extends AndroidViewModel {
         service.getUpcomingMovies(page).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (results.getValue() == null) {
+                if (results.getValue() == null && response.body() != null) {
                     results.setValue(response.body().getResults());
-                } else {
+                } else if (response.body() != null) {
                     List<Result> pageList = new ArrayList<>();
                     pageList.addAll(results.getValue());
                     pageList.addAll(response.body().getResults());

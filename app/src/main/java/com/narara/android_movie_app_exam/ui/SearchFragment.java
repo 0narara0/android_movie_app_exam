@@ -7,14 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentSearchBinding;
@@ -76,11 +74,7 @@ public class SearchFragment extends Fragment {
                             if (!isScrollable) {
                                 mModel.fetchSearch(s, mModel.currentPage + 1);
                             }
-//                            int lastVisibleItemPosition = ((LinearLayoutManager)mBinding.recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-//                            int itemTotalCount = mBinding.recyclerView.getAdapter().getItemCount() - 1;
-//                            if (lastVisibleItemPosition == itemTotalCount) {
-//                                Toast.makeText(getContext(), "Last Position", Toast.LENGTH_SHORT).show();
-//                            }
+
                         }
                     });
                 }

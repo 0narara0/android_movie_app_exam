@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -111,10 +110,6 @@ public class MovieFragment extends Fragment {
                 }
             }
 
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
         });
 
 
@@ -126,11 +121,13 @@ public class MovieFragment extends Fragment {
 
         });
 
+
         mBinding.fab.setOnClickListener(view -> {
             List<Result> resultList = mModel.results.getValue();
             Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
             movieAdapter.setItems(resultList);
         });
+
 
         return mBinding.getRoot();
     }
@@ -140,23 +137,19 @@ public class MovieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // SwipeRefreshLayout
-        mBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (getArguments() != null) {
-                    if (getArguments().getString("id").equals("popular")) {
-                        mModel.fetchPopular(1);
-                    } else if (getArguments().getString("id").equals("now")) {
-                        mModel.fetchNow(1);
-                    } else if (getArguments().getString("id").equals("top")) {
-                        mModel.fetchTop(1);
-                    } else if (getArguments().getString("id").equals("upcoming")) {
-                        mModel.fetchUpcoming(1);
-                    }
+        mBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (getArguments() != null) {
+                if (getArguments().getString("id").equals("popular")) {
+                    mModel.fetchPopular(1);
+                } else if (getArguments().getString("id").equals("now")) {
+                    mModel.fetchNow(1);
+                } else if (getArguments().getString("id").equals("top")) {
+                    mModel.fetchTop(1);
+                } else if (getArguments().getString("id").equals("upcoming")) {
+                    mModel.fetchUpcoming(1);
                 }
             }
         });
-
     }
 
 
