@@ -6,12 +6,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.narara.android_movie_app_exam.models.Result;
 import com.narara.android_movie_app_exam.ui.DetailFragment;
 import com.narara.android_movie_app_exam.ui.MovieFragment;
 import com.narara.android_movie_app_exam.ui.OpenFragment;
+import com.narara.android_movie_app_exam.ui.TimePickerFragment;
 import com.narara.android_movie_app_exam.utils.MovieAdapter;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 

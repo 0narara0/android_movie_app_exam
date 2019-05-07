@@ -114,7 +114,6 @@ public class FavoriteFragment extends Fragment {
             });
 
 
-
         });
 
         viewModel.filteredResults.observe(this, results -> {
@@ -141,15 +140,8 @@ public class FavoriteFragment extends Fragment {
             mBinding.searchView.setOnCloseListener(() -> {
                 adapter.setItems(viewModel.resultList);
                 return false;
+            });
         });
-        });
-
-
-
-
-
-
-
 
 
     }

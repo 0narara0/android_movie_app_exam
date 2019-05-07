@@ -5,15 +5,19 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.narara.android_movie_app_exam.DetailActivity;
 import com.narara.android_movie_app_exam.R;
@@ -23,7 +27,10 @@ import com.narara.android_movie_app_exam.utils.MovieAdapter;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class MovieFragment extends Fragment {
@@ -67,13 +74,13 @@ public class MovieFragment extends Fragment {
 
         if (getArguments() != null) {
             if (getArguments().getString("id").equals("popular")) {
-                mModel.fetchPopular();
+                mModel.fetchPopular(1);
             } else if (getArguments().getString("id").equals("now")) {
-                mModel.fetchNow();
+                mModel.fetchNow(1);
             } else if (getArguments().getString("id").equals("top")) {
-                mModel.fetchTop();
+                mModel.fetchTop(1);
             } else if (getArguments().getString("id").equals("upcoming")) {
-                mModel.fetchUpcoming();
+                mModel.fetchUpcoming(1);
             }
         }
 
@@ -88,6 +95,9 @@ public class MovieFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
+
         mBinding.recyclerView.setAdapter(movieAdapter);
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
         mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -95,7 +105,6 @@ public class MovieFragment extends Fragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 boolean isScrollable = mBinding.recyclerView.canScrollVertically(1);
                 if (!isScrollable) {
-
                     if (getArguments() != null) {
                         if (getArguments().getString("id").equals("popular")) {
                             mModel.fetchPopular(mModel.currentPage + 1);
@@ -108,6 +117,11 @@ public class MovieFragment extends Fragment {
                         }
                     }
                 }
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
             }
         });
 
@@ -139,13 +153,13 @@ public class MovieFragment extends Fragment {
             public void onRefresh() {
                 if (getArguments() != null) {
                     if (getArguments().getString("id").equals("popular")) {
-                        mModel.fetchPopular();
+                        mModel.fetchPopular(1);
                     } else if (getArguments().getString("id").equals("now")) {
-                        mModel.fetchNow();
+                        mModel.fetchNow(1);
                     } else if (getArguments().getString("id").equals("top")) {
-                        mModel.fetchTop();
+                        mModel.fetchTop(1);
                     } else if (getArguments().getString("id").equals("upcoming")) {
-                        mModel.fetchUpcoming();
+                        mModel.fetchUpcoming(1);
                     }
                 }
             }

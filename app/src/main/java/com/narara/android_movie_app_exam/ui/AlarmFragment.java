@@ -16,16 +16,24 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.narara.android_movie_app_exam.MainActivity;
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.SplashActivity;
 import com.narara.android_movie_app_exam.databinding.FragmentAlarmBinding;
+import com.narara.android_movie_app_exam.models.ReleaseDate;
 import com.narara.android_movie_app_exam.models.Result;
+import com.narara.android_movie_app_exam.utils.MovieAdapter;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 
@@ -74,15 +82,50 @@ public class AlarmFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentAlarmBinding binding = FragmentAlarmBinding.bind(view);
+        MovieAdapter adapter = new MovieAdapter();
+        binding.recyclerView.setAdapter(adapter);
 
-//        List<Result> dateList = new ArrayList<>();
-//        dateList = mModel.results.getValue();
-//        Collections.sort(dateList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
-//        //movieAdapter.setItems(resultList);
+
+        SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
+        Calendar time = Calendar.getInstance();
+        String todayDate = format.format(time.getTime());
+
+
+//        List<ReleaseDate> dateList = new ArrayList<>();
+//        for (int i = 0; i < dateList.size() ; i++) {
+//            String releaseDate = mModel.results.getValue().get(i).getRelease_date();
+//            SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
+//            Date date1 = null;
+//            Date date2 = null;
+//            try {
+//                date1 = dateFormat.parse(todayDate);
+//                date2 = dateFormat.parse(releaseDate);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            dateList.add(new ReleaseDate(todayDate, releaseDate));
+//            final boolean after = date1.after(date2);
+//
+//            if (after) {
+//
+//            }
+//        }
+
+
+//        Collections.(dateList, new Comparator<ReleaseDate>() {
+//            @Override
+//            public int compare(ReleaseDate o1, ReleaseDate o2) {
+//                int compare = o1.getToday().compareTo(o2.getReleaseDate());
+//                return compare;
+//            }
+//
+//        });
+
+//        Toast.makeText(requireContext(), "" + dateList.toString(), Toast.LENGTH_SHORT).show();
 
 
         binding.buttonCreate.setOnClickListener(v -> {
-            showNotification(requireContext(), "미개봉 영화", 1);
+            showNotification(requireContext(), "영화 알림", 1);
 
         });
         binding.buttonRemove.setOnClickListener(v -> {
@@ -95,7 +138,7 @@ public class AlarmFragment extends Fragment {
     public void showAlarmDialog(View view) {
         TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.show(getChildFragmentManager(), "timePicker");
-        showNotification(requireContext(), "미개봉 영화", 1);
+
     }
 
     public static void showNotification(Context context, String content, int id) {

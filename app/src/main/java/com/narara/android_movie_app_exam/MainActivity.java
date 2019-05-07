@@ -15,6 +15,7 @@ import com.narara.android_movie_app_exam.ui.AlarmFragment;
 import com.narara.android_movie_app_exam.ui.FavoriteFragment;
 import com.narara.android_movie_app_exam.ui.MovieFragment;
 import com.narara.android_movie_app_exam.ui.OpenFragment;
+import com.narara.android_movie_app_exam.ui.TimePickerFragment;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,7 +23,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AppCompatActivity {
-    private Result mResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
