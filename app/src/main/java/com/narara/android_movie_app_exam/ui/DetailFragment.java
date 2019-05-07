@@ -57,7 +57,7 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
             mResult = (Result) getArguments().getSerializable(KEY_MOVIE);
         } else {
-            throw new IllegalArgumentException(" result를 반드시 가져야함");
+            throw new IllegalArgumentException(" result 를 반드시 가져야함");
         }
     }
 
@@ -126,7 +126,6 @@ public class DetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         // ShareButton
         mBinding.buttonShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -134,7 +133,6 @@ public class DetailFragment extends Fragment {
             shareIntent.putExtra(Intent.EXTRA_TEXT, mResult.getTitle());
             startActivity(Intent.createChooser(shareIntent, "movie"));
         });
-
 
     }
 
@@ -149,8 +147,6 @@ public class DetailFragment extends Fragment {
         if (item.getItemId() == R.id.action_alarm) {
 
             registerAlarm();
-//            TimePickerFragment timePickerFragment = new TimePickerFragment();
-//            timePickerFragment.show(getChildFragmentManager(), "timePicker");
         }
         return true;
     }
@@ -166,12 +162,6 @@ public class DetailFragment extends Fragment {
     public void registerAlarm() {
         AlarmManager alarm_manager = (AlarmManager) requireContext().getSystemService(ALARM_SERVICE);
 
-   /*     TimePickerFragment.newInstance().setOnSendAlarmTimeListener(new TimePickerFragment.onSendAlarmTimeListener() {
-            @Override
-            public void onSendAlarmTime(int hour, int minutes) {
-                Calendar calendar = setAlarmTime(hour, minutes, 10);
-            }
-        });*/
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 17);
         calendar.set(Calendar.MINUTE, 18);

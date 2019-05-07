@@ -16,41 +16,23 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.narara.android_movie_app_exam.MainActivity;
 import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.SplashActivity;
 import com.narara.android_movie_app_exam.databinding.FragmentAlarmBinding;
-import com.narara.android_movie_app_exam.models.ReleaseDate;
-import com.narara.android_movie_app_exam.models.Result;
 import com.narara.android_movie_app_exam.utils.MovieAdapter;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
 
 
 public class AlarmFragment extends Fragment {
     private MovieViewModel mModel;
 
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    private String mParam1;
-//    private String mParam2;
-
 
     public AlarmFragment() {
-        // Required empty public constructor
     }
-
 
     public static AlarmFragment newInstance() {
         AlarmFragment fragment = new AlarmFragment();
@@ -61,10 +43,6 @@ public class AlarmFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
     }
 
     @Override
@@ -72,9 +50,6 @@ public class AlarmFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alarm, container, false);
         mModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-
-
-
         return view;
     }
 
@@ -89,40 +64,6 @@ public class AlarmFragment extends Fragment {
         SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
         Calendar time = Calendar.getInstance();
         String todayDate = format.format(time.getTime());
-
-
-//        List<ReleaseDate> dateList = new ArrayList<>();
-//        for (int i = 0; i < dateList.size() ; i++) {
-//            String releaseDate = mModel.results.getValue().get(i).getRelease_date();
-//            SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
-//            Date date1 = null;
-//            Date date2 = null;
-//            try {
-//                date1 = dateFormat.parse(todayDate);
-//                date2 = dateFormat.parse(releaseDate);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//            dateList.add(new ReleaseDate(todayDate, releaseDate));
-//            final boolean after = date1.after(date2);
-//
-//            if (after) {
-//
-//            }
-//        }
-
-
-//        Collections.(dateList, new Comparator<ReleaseDate>() {
-//            @Override
-//            public int compare(ReleaseDate o1, ReleaseDate o2) {
-//                int compare = o1.getToday().compareTo(o2.getReleaseDate());
-//                return compare;
-//            }
-//
-//        });
-
-//        Toast.makeText(requireContext(), "" + dateList.toString(), Toast.LENGTH_SHORT).show();
-
 
         binding.buttonCreate.setOnClickListener(v -> {
             showNotification(requireContext(), "영화 알림", 1);
@@ -164,7 +105,6 @@ public class AlarmFragment extends Fragment {
 
         notificationManager.notify(id, builder.build());
     }
-
 
     public void notificationHide() {
         // 알림 해제
