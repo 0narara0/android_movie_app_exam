@@ -129,7 +129,6 @@ public class MovieViewModel extends AndroidViewModel {
         });
     }
 
-
     public void fetchNow(int page) {
         service.getNowMovies(page).enqueue(new Callback<Movie>() {
             @Override
@@ -152,7 +151,6 @@ public class MovieViewModel extends AndroidViewModel {
         });
     }
 
-
     public void fetchTop(int page) {
         service.getTopMovies(page).enqueue(new Callback<Movie>() {
             @Override
@@ -174,7 +172,6 @@ public class MovieViewModel extends AndroidViewModel {
             }
         });
     }
-
 
     public void fetchUpcoming(int page) {
         service.getUpcomingMovies(page).enqueue(new Callback<Movie>() {

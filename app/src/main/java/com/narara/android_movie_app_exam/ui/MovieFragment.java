@@ -128,7 +128,6 @@ public class MovieFragment extends Fragment {
             movieAdapter.setItems(resultList);
         });
 
-
         return mBinding.getRoot();
     }
 
