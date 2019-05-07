@@ -145,13 +145,13 @@ public class MovieFragment extends Fragment {
             public void onRefresh() {
                 if (getArguments() != null) {
                     if (getArguments().getString("id").equals("popular")) {
-                        mModel.fetchPopular(1);
+                        mModel.fetchPopular(mModel.currentPage);
                     } else if (getArguments().getString("id").equals("now")) {
-                        mModel.fetchNow(1);
+                        mModel.fetchNow(mModel.currentPage);
                     } else if (getArguments().getString("id").equals("top")) {
-                        mModel.fetchTop(1);
+                        mModel.fetchTop(mModel.currentPage);
                     } else if (getArguments().getString("id").equals("upcoming")) {
-                        mModel.fetchUpcoming(1);
+                        mModel.fetchUpcoming(mModel.currentPage);
                     }
                 }
             }
