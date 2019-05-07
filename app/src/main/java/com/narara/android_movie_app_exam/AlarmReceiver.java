@@ -12,9 +12,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String date = intent.getStringExtra("date");
         String text = intent.getStringExtra("text");
-        String content=date + "에 " + text + "가 개봉합니다";
+        String content = date + "에 " + text + "가 개봉합니다";
 
         // 노티
-       showNotification(context, content, 1);
+        showNotification(context, content, 1);
     }
 }

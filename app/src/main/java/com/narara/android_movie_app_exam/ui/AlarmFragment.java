@@ -61,7 +61,7 @@ public class AlarmFragment extends Fragment {
         binding.recyclerView.setAdapter(adapter);
 
 
-        SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar time = Calendar.getInstance();
         String todayDate = format.format(time.getTime());
 
