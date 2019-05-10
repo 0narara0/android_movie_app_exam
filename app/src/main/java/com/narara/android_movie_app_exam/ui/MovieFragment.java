@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -71,7 +70,8 @@ public class MovieFragment extends Fragment {
             mBinding.swipeRefreshLayout.setRefreshing(false);
         });
 
-        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
+        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(),
+                DividerItemDecoration.VERTICAL));
 
 
         mBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -82,6 +82,7 @@ public class MovieFragment extends Fragment {
                     if (getArguments() != null) {
                         String id = getArguments().getString("id");
                         mModel.fetch(id, mModel.currentPage + 1);
+
                     }
                 }
             }
@@ -104,13 +105,10 @@ public class MovieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // SwipeRefreshLayout
-        mBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (getArguments() != null) {
-                    String id = getArguments().getString("id");
-                    mModel.fetch(id, 1);
-                }
+        mBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (getArguments() != null) {
+                String id = getArguments().getString("id");
+                mModel.fetch(id, 1);
             }
         });
 

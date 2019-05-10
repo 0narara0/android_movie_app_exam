@@ -11,7 +11,9 @@ import java.util.Objects;
 
 @Entity
 public class Result implements Serializable {
-    public Result() {
+    public Result(String title, int order) {
+        this.title = title;
+        this.order = order;
     }
 
     @PrimaryKey
@@ -30,6 +32,15 @@ public class Result implements Serializable {
     private boolean adult;
     private String overview;
     private String release_date;
+    private int order;
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
     public int getVote_count() {
         return vote_count;

@@ -1,7 +1,6 @@
 package com.narara.android_movie_app_exam.ui;
 
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -26,7 +25,9 @@ import com.narara.android_movie_app_exam.R;
 import com.narara.android_movie_app_exam.databinding.FragmentFavoriteBinding;
 import com.narara.android_movie_app_exam.databinding.ItemFavoriteBinding;
 import com.narara.android_movie_app_exam.models.Result;
+import com.narara.android_movie_app_exam.utils.ItemTouchHelperAdapter;
 import com.narara.android_movie_app_exam.utils.ListDiffCallback;
+import com.narara.android_movie_app_exam.utils.SimpleItemTouchHelperCallback;
 import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
 import java.util.ArrayList;
@@ -35,25 +36,17 @@ import java.util.List;
 
 public class FavoriteFragment extends Fragment {
 
+    private boolean isSwapped = false;
     private FragmentFavoriteBinding mBinding;
+    private MovieViewModel mModel;
+    private FavoriteAdapter mAdapter;
 
     public FavoriteFragment() {
-        // Required empty public constructor
     }
-
 
     public static FavoriteFragment newInstance() {
         FavoriteFragment fragment = new FavoriteFragment();
-
         return fragment;
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -67,80 +60,121 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MovieViewModel viewModel = ViewModelProviders.of(requireActivity())
+        mModel = ViewModelProviders.of(requireActivity())
                 .get(MovieViewModel.class);
 
-        FavoriteAdapter adapter = new FavoriteAdapter(model -> {
+        mAdapter = new FavoriteAdapter(model -> {
             // DetailFragment 이동
             Intent intent = new Intent(getActivity(), DetailActivity.class);
             intent.putExtra("result", model);
             startActivity(intent);
         });
 
-        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+        // 선생님 code
+
+       /* ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView,
                                   @NonNull RecyclerView.ViewHolder viewHolder,
                                   @NonNull RecyclerView.ViewHolder viewHolder1) {
+
                 return false;
             }
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                Result favorite = adapter.mItems.get(viewHolder.getAdapterPosition());
-                viewModel.deleteFavorite(favorite);
+                Result favorite = mAdapter.mItems.get(viewHolder.getAdapterPosition());
+                mModel.deleteFavorite(favorite);
+                mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
             }
         });
-        helper.attachToRecyclerView(mBinding.recyclerView);
+        helper.attachToRecyclerView(mBinding.recyclerView);*/
 
 
-        mBinding.recyclerView.setAdapter(adapter);
-        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
+        ItemTouchHelperAdapter itemTouchHelperAdapter = new ItemTouchHelperAdapter() {
+            @Override
+            public boolean onItemMove(int fromPosition, int toPosition) {
 
-        viewModel.favorites().observe(this, items -> {
-            adapter.updateItems(items);
-            viewModel.resultList = items;
-            viewModel.filteredResults.setValue(items);
+                mAdapter.onItemMove(fromPosition, toPosition);
+
+                isSwapped = true;
+                return false;
+            }
+
+
+            @Override
+            public void onItemDismiss(int position) {
+                Result favorite = mAdapter.mItems.get(position);
+                mModel.deleteFavorite(favorite);
+                mAdapter.onItemDismiss(position);
+            }
+
+        };
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemTouchHelperAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mBinding.recyclerView);
+
+
+        mBinding.recyclerView.setAdapter(mAdapter);
+        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(),
+                DividerItemDecoration.VERTICAL));
+
+        mModel.getFavorites().observe(this, items -> {
+            mAdapter.updateItems(items);
+            mModel.resultList = items;
+            mModel.filteredResults.setValue(items);
 
             mBinding.fab.setOnClickListener(v -> {
-                Collections.sort(items, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
-                adapter.setItems(items);
+                Collections.sort(items, (o1, o2) ->
+                        o1.getRelease_date().compareTo(o2.getRelease_date()));
+                mAdapter.updateItems(items);
             });
 
 
         });
 
-        viewModel.filteredResults.observe(this, results -> {
+        mModel.filteredResults.observe(this, results -> {
             mBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    mBinding.fab.setVisibility(View.GONE);
+                    mBinding.fab.setEnabled(false);
                     if (!TextUtils.isEmpty(query)) {
-                        viewModel.search(query);
-                        adapter.setItems(viewModel.filteredResults.getValue());
+                        mModel.search(query);
+                        mAdapter.setItems(mModel.filteredResults.getValue());
                     }
                     return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    return false;
+                    if (!TextUtils.isEmpty(newText)) {
+                        mModel.search(newText);
+                        mAdapter.setItems(mModel.filteredResults.getValue());
+                    }
+                    return true;
                 }
             });
 
 
             mBinding.searchView.setOnCloseListener(() -> {
-                adapter.setItems(viewModel.resultList);
+                mAdapter.setItems(mModel.resultList);
                 return false;
             });
         });
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
 
     }
 
-    public static class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
+    public static class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>
+            implements ItemTouchHelperAdapter {
+
+
         interface OnFavoriteClickListener {
             void onFavoriteClicked(Result model);
         }
@@ -150,8 +184,6 @@ public class FavoriteFragment extends Fragment {
         private List<Result> mItems = new ArrayList<>();
         // Collections.synchronizedList(new ArrayList());
 
-        public FavoriteAdapter() {
-        }
 
         public FavoriteAdapter(OnFavoriteClickListener listener) {
             mListener = listener;
@@ -162,10 +194,15 @@ public class FavoriteFragment extends Fragment {
             notifyDataSetChanged();
         }
 
+        public List<Result> getItems() {
+            return mItems;
+        }
+
         public void updateItems(List<Result> items) {
             // synchronized(mItems)
             new Thread(() -> {
-                final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new ListDiffCallback(this.mItems, items));
+                final DiffUtil.DiffResult result = DiffUtil.calculateDiff(
+                        new ListDiffCallback(this.mItems, items));
 
                 mItems.clear();
                 mItems.addAll(items);
@@ -173,6 +210,28 @@ public class FavoriteFragment extends Fragment {
                 new Handler(Looper.getMainLooper()).post(() -> result.dispatchUpdatesTo(this));
             }).start();
         }
+
+        @Override
+        public boolean onItemMove(int fromPosition, int toPosition) {
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(mItems, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(mItems, i, i - 1);
+                }
+            }
+            notifyItemMoved(fromPosition, toPosition);
+            return true;
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+            mItems.remove(position);
+            notifyItemRemoved(position);
+        }
+
 
         @NonNull
         @Override
@@ -208,6 +267,15 @@ public class FavoriteFragment extends Fragment {
                 super(itemView);
                 binding = ItemFavoriteBinding.bind(itemView);
             }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (isSwapped) {
+            mModel.update(mAdapter.getItems());
         }
     }
 }

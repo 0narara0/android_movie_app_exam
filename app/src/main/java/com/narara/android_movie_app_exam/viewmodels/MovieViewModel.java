@@ -38,6 +38,7 @@ public class MovieViewModel extends AndroidViewModel {
         mDb = Room.databaseBuilder(application,
                 AppDatabase.class, "database-name")
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration() //db 스키마 변경되면 이전 것은 날리고 새 db로 교체
                 .build();
 
     }
@@ -50,6 +51,17 @@ public class MovieViewModel extends AndroidViewModel {
         }
     }
 
+    public LiveData<List<Result>> getFavorites() {
+        return mDb.favoritesDao().getAll();
+    }
+
+    public void update(List<Result> favorites) {
+        for (int i = 0; i < favorites.size(); i++) {
+            favorites.get(i).setOrder(i);
+        }
+        mDb.favoritesDao().deleteAll();
+        mDb.favoritesDao().insertFavorites(favorites);
+    }
 
     public void deleteFavorite(Result favorite) {
         mDb.favoritesDao().deleteFavorite(favorite);
@@ -114,9 +126,9 @@ public class MovieViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.body() != null) {
-                    if (results.getValue() == null) {
+                    if (currentPage == 1) {
                         results.setValue(response.body().getResults());
-                    } else {
+                    } else if (results.getValue() != null) {
                         List<Result> pageList = new ArrayList<>();
                         pageList.addAll(results.getValue());
                         pageList.addAll(response.body().getResults());
@@ -168,4 +180,5 @@ public class MovieViewModel extends AndroidViewModel {
         Collections.sort(resultList, (o1, o2) -> o1.getRelease_date().compareTo(o2.getRelease_date()));
         results.setValue(resultList);
     }
+
 }

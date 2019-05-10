@@ -67,7 +67,7 @@ public class AlarmFragment extends Fragment {
         binding.buttonRemove.setOnClickListener(v -> {
             notificationHide();
         });
-        binding.buttonAlarm.setOnClickListener(v -> showAlarmDialog(v));
+        binding.buttonAlarm.setOnClickListener(this::showAlarmDialog);
 
     }
 
@@ -80,14 +80,17 @@ public class AlarmFragment extends Fragment {
     public static void showNotification(Context context, String content, int id) {
         Intent intent = new Intent(context, SplashActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long[] vibrate = {0, 100, 200, 300};
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
+        NotificationCompat.Builder builder = new NotificationCompat
+                .Builder(context, "default")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("영화 알림")
                 .setContentText(content)
-                .setSound(RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_NOTIFICATION))
+                .setSound(RingtoneManager.getActualDefaultRingtoneUri(
+                        context, RingtoneManager.TYPE_NOTIFICATION))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(content))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

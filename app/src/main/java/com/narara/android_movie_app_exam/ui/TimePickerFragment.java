@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
 import com.narara.android_movie_app_exam.SplashActivity;
-import com.narara.android_movie_app_exam.viewmodels.MovieViewModel;
 
 import java.util.Calendar;
 
@@ -42,7 +40,8 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         calendar.set(Calendar.MINUTE, minute);
 
         Intent intent = new Intent(getContext(), SplashActivity.class);
-        PendingIntent operation = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent operation = PendingIntent.getBroadcast(getContext(), 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), operation);
     }

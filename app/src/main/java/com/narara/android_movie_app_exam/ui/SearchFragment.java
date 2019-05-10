@@ -47,11 +47,10 @@ public class SearchFragment extends Fragment {
                         .addToBackStack(null)
                         .commit());
         mBinding.recyclerView.setAdapter(adapter);
-        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
+        mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(),
+                DividerItemDecoration.VERTICAL));
 
-        mModel.results.observe(this, results -> {
-            adapter.setItems(results);
-        });
+        mModel.results.observe(this, adapter::setItems);
         return mBinding.getRoot();
     }
 

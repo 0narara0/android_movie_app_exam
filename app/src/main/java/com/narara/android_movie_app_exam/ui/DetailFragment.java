@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,36 +78,6 @@ public class DetailFragment extends Fragment {
                     -> model.completeChanged(mResult, isChecked));
         });
 
-        model.results.observe(this, results -> {
-
-            AlarmManager alarm_manager = (AlarmManager) requireContext().getSystemService(ALARM_SERVICE);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 5);
-            calendar.set(Calendar.MINUTE, 23);
-            calendar.set(Calendar.SECOND, 10);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-
-            for (int i = 0; i < results.size(); i++) {
-                try {
-                    Date strDate = sdf.parse(results.get(i).getRelease_date());
-                    if (strDate.after(new Date())) {
-                        Intent intent = new Intent(requireActivity(), AlarmReceiver.class);
-                        intent.putExtra("date", results.get(i).getRelease_date());
-                        intent.putExtra("text", results.get(i).getTitle());
-
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), 0, intent, 0);
-
-                        alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         return view;
 
     }
@@ -136,7 +105,6 @@ public class DetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_alarm) {
-
             registerAlarm();
         }
         return true;
@@ -154,17 +122,15 @@ public class DetailFragment extends Fragment {
         AlarmManager alarm_manager = (AlarmManager) requireContext().getSystemService(ALARM_SERVICE);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 18);
+        calendar.set(Calendar.HOUR_OF_DAY, 07);
+        calendar.set(Calendar.MINUTE, 24);
         calendar.set(Calendar.SECOND, 30);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        long currentTimeMillis = System.currentTimeMillis();
 
         try {
             Date strDate = sdf.parse(mResult.getRelease_date());
             if (strDate.after(new Date())) {
                 Intent intent = new Intent(requireActivity(), AlarmReceiver.class);
-                Log.d("currentTime", "onChanged: " + new Date());
                 intent.putExtra("date", mResult.getRelease_date());
                 intent.putExtra("text", mResult.getTitle());
 
