@@ -4,7 +4,6 @@ package com.narara.android_movie_app.ui;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -29,7 +28,6 @@ import com.narara.android_movie_app.models.Result;
 import com.narara.android_movie_app.utils.ItemTouchHelperAdapter;
 import com.narara.android_movie_app.utils.ListDiffCallback;
 import com.narara.android_movie_app.utils.SimpleItemTouchHelperCallback;
-import com.narara.android_movie_app.utils.SwipeControllerActions;
 import com.narara.android_movie_app.viewmodels.MovieViewModel;
 
 import java.util.ArrayList;
@@ -72,9 +70,7 @@ public class FavoriteFragment extends Fragment {
             startActivity(intent);
         });
 
-        // 선생님 code
-
-       /* ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView,
@@ -91,7 +87,7 @@ public class FavoriteFragment extends Fragment {
                 mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
             }
         });
-        helper.attachToRecyclerView(mBinding.recyclerView);*/
+        helper.attachToRecyclerView(mBinding.recyclerView);
 
 
         ItemTouchHelperAdapter itemTouchHelperAdapter = new ItemTouchHelperAdapter() {
@@ -107,28 +103,11 @@ public class FavoriteFragment extends Fragment {
 
             @Override
             public void onItemDismiss(int position) {
-                Result favorite = mAdapter.mItems.get(position);
-                mModel.deleteFavorite(favorite);
-                mAdapter.onItemDismiss(position);
             }
 
         };
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemTouchHelperAdapter);
-        SimpleItemTouchHelperCallback simpleItemTouchHelperCallback = new SimpleItemTouchHelperCallback
-                (new SwipeControllerActions() {
-                    @Override
-                    public void onLeftClicked(int position) {
-                        super.onLeftClicked(position);
 
-                    }
-
-                    @Override
-                    public void onRightClicked(int position) {
-                        mAdapter.mItems.remove(position);
-                        mAdapter.notifyItemRemoved(position);
-                        mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount());
-                    }
-                });
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mBinding.recyclerView);
 
@@ -136,13 +115,6 @@ public class FavoriteFragment extends Fragment {
         mBinding.recyclerView.setAdapter(mAdapter);
         mBinding.recyclerView.addItemDecoration(new DividerItemDecoration(requireActivity(),
                 DividerItemDecoration.VERTICAL));
-
-        mBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
-                simpleItemTouchHelperCallback.onDraw(canvas);
-            }
-        });
 
         mModel.getFavorites().observe(this, items -> {
             mAdapter.updateItems(items);

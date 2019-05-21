@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(this, "ca-app-pub-7334604890651714~5353886655");
 
 
         AdRequest adRequest = new AdRequest.Builder().build();
