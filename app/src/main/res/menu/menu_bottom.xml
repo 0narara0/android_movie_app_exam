@@ -10,8 +10,8 @@
         android:icon="@drawable/ic_favorite_red_24dp"
         android:title="Favorites" />
 
-    <item
+    <!--<item
         android:id="@+id/alarm_menu"
         android:icon="@drawable/ic_add_alarm_white_24dp"
-        android:title="Alarm" />
+        android:title="Alarm" />-->
 </menu>

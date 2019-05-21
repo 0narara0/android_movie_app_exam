@@ -9,7 +9,7 @@
 
         <variable
             name="favorite"
-            type="com.narara.android_movie_app_exam.models.Result" />
+            type="com.narara.android_movie_app.models.Result" />
     </data>
 
     <LinearLayout
