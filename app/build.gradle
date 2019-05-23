@@ -8,13 +8,24 @@ android {
         applicationId "com.narara.android_movie_app"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0"
+        versionCode 5
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        // APK 생성 시 버전명 자동 기입하기
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "app-${variant.name}-${variant.versionName}.apk"
+            }
+        }
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
             minifyEnabled false
+            versionNameSuffix '-debug'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
