@@ -5,6 +5,8 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Room;
+import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.narara.android_movie_app.TmdbService;
@@ -15,6 +17,7 @@ import com.narara.android_movie_app.models.Result;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,9 +83,20 @@ public class MovieViewModel extends AndroidViewModel {
 
     private TmdbService service = retrofit.create(TmdbService.class);
 
+    private Locale getLocale(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return context.getResources().getConfiguration().getLocales().get(0);
+        } else {
+            //noinspection deprecation
+            return context.getResources().getConfiguration().locale;
+        }
+    }
+
+    // 기기별 언어 + 국가 얻기
+    private String local = getLocale(getApplication()).getLanguage() + "-" + getLocale(getApplication());
 
     public void fetchSearch(String search) {
-        service.getMovies(search).enqueue(new Callback<Movie>() {
+        service.getMovies(search, local).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.body() != null) {
@@ -98,7 +112,7 @@ public class MovieViewModel extends AndroidViewModel {
     }
 
     public void fetchSearch(String search, int page) {
-        service.getMovies(search, page).enqueue(new Callback<Movie>() {
+        service.getMovies(search, page, local).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.body() != null) {
@@ -147,16 +161,16 @@ public class MovieViewModel extends AndroidViewModel {
 
         switch (id) {
             case "popular":
-                service.getPopularMovies(page).enqueue(callback);
+                service.getPopularMovies(page, local).enqueue(callback);
                 break;
             case "now":
-                service.getNowMovies(page).enqueue(callback);
+                service.getNowMovies(page, local).enqueue(callback);
                 break;
             case "top":
-                service.getTopMovies(page).enqueue(callback);
+                service.getTopMovies(page, local).enqueue(callback);
                 break;
             case "upcoming":
-                service.getUpcomingMovies(page).enqueue(callback);
+                service.getUpcomingMovies(page, local).enqueue(callback);
                 break;
         }
 
