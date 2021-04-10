@@ -1,7 +1,7 @@
 package com.narara.android_movie_app.localdb;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 import com.narara.android_movie_app.models.Result;
 

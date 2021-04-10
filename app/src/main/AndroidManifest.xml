@@ -16,7 +16,7 @@
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7334604890651714~5353886655" />
+            android:value="@string/Admob_ID" />
 
         <activity
             android:name="com.narara.android_movie_app.SplashActivity"

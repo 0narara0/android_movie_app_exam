@@ -1,6 +1,6 @@
 package com.narara.android_movie_app.utils;
 
-import android.support.v7.util.DiffUtil;
+import androidx.recyclerview.widget.DiffUtil;
 
 import com.narara.android_movie_app.models.Result;
 

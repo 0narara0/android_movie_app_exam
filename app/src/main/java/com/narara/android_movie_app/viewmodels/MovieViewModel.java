@@ -1,13 +1,15 @@
 package com.narara.android_movie_app.viewmodels;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.persistence.room.Room;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.room.Room;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.narara.android_movie_app.TmdbService;
 import com.narara.android_movie_app.localdb.AppDatabase;
@@ -24,6 +26,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MovieViewModel extends AndroidViewModel {
@@ -99,6 +103,7 @@ public class MovieViewModel extends AndroidViewModel {
         service.getMovies(search, local).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
+                Log.d(TAG, "onResponse: " + response);
                 if (response.body() != null) {
                     results.setValue(response.body().getResults());
                 }
@@ -139,8 +144,10 @@ public class MovieViewModel extends AndroidViewModel {
         Callback<Movie> callback = new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
+                Log.d(TAG, "cmy1: onResponse: " + response);
                 if (response.body() != null) {
                     if (currentPage == 1) {
+                        Log.d(TAG, "cmy2: onResponse: "+response.body().getResults());
                         results.setValue(response.body().getResults());
                     } else if (results.getValue() != null) {
                         List<Result> pageList = new ArrayList<>();

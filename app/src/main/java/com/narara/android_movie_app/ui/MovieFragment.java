@@ -1,15 +1,17 @@
 package com.narara.android_movie_app.ui;
 
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import com.narara.android_movie_app.R;
 import com.narara.android_movie_app.databinding.FragmentMovieBinding;
 import com.narara.android_movie_app.utils.MovieAdapter;
 import com.narara.android_movie_app.viewmodels.MovieViewModel;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MovieFragment extends Fragment {
@@ -66,6 +70,7 @@ public class MovieFragment extends Fragment {
         });
         mBinding.recyclerView.setAdapter(movieAdapter);
         mModel.results.observe(this, results -> {
+            Log.d(TAG, "onCreateView: " + results );
             movieAdapter.setItems(results);
             mBinding.swipeRefreshLayout.setRefreshing(false);
         });

@@ -1,7 +1,7 @@
 package com.narara.android_movie_app;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.narara.android_movie_app.models.Result;
 import com.narara.android_movie_app.ui.DetailFragment;

@@ -7,10 +7,12 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface TmdbService {
-    @GET("3/search/movie?api_key=3283241144963ba613a482242cf1c715")
+    public static final int TMDB_API_KEY = R.string.TMDB_API_KEY;
+
+    @GET("3/search/movie?api_key=" + TMDB_API_KEY)
     Call<Movie> getMovies(@Query("query") String query, @Query("language") String language);
 
-    @GET("3/search/movie?api_key=3283241144963ba613a482242cf1c715")
+    @GET("3/search/movie?api_key=" + TMDB_API_KEY)
     Call<Movie> getMovies(@Query("query") String query, @Query("page") int page, @Query("language") String language);
 
     @GET("3/movie/popular?api_key=3283241144963ba613a482242cf1c715")
