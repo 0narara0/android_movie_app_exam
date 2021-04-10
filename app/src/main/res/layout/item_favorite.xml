@@ -35,7 +35,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@{favorite.title}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                tools:text="제목" />
+                tools:text="@string/title" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@{favorite.release_date}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                tools:text="개봉일" />
+                tools:text="@string/release_date" />
         </LinearLayout>
 
     </LinearLayout>

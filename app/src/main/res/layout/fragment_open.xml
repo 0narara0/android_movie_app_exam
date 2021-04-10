@@ -24,25 +24,25 @@
                 android:id="@+id/tab_item_popular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Popular" />
+                android:text="@string/popular" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Now" />
+                android:text="@string/now" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Top Rated" />
+                android:text="@string/top_rated" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_upcoming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upcoming" />
+                android:text="@string/upcoming" />
         </com.google.android.material.tabs.TabLayout>
 
         <FrameLayout

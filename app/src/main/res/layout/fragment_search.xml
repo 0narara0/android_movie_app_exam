@@ -21,7 +21,7 @@
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:defaultQueryHint="검색어를 입력하세요" />
+            app:defaultQueryHint="@string/default_query_hint" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

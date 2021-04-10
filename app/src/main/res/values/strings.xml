@@ -6,4 +6,18 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="movie_chart">Movie Chart</string>
+    <string name="alarm">알람</string>
+    <string name="popular">Popular</string>
+    <string name="now">Now</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="title">제목</string>
+    <string name="release_date">개봉일</string>
+    <string name="story">줄거리</string>
+    <string name="default_query_hint">검색어를 입력하세요</string>
+    <string name="home_button">Home</string>
+    <string name="favorites_button">Favorites</string>
+    <string name="search_button">Search</string>
+    <string name="share_button">Share</string>
 </resources>
