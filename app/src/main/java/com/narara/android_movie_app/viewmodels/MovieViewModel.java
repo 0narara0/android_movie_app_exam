@@ -1,16 +1,19 @@
 package com.narara.android_movie_app.viewmodels;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
+
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.narara.android_movie_app.R;
 import com.narara.android_movie_app.TmdbService;
 import com.narara.android_movie_app.localdb.AppDatabase;
 import com.narara.android_movie_app.models.Movie;
@@ -100,7 +103,7 @@ public class MovieViewModel extends AndroidViewModel {
     private String local = getLocale(getApplication()).getLanguage() + "-" + getLocale(getApplication());
 
     public void fetchSearch(String search) {
-        service.getMovies(search, local).enqueue(new Callback<Movie>() {
+        service.getMovies(getApplication().getResources().getString(R.string.TMDB_API_KEY), search, local).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 Log.d(TAG, "onResponse: " + response);
@@ -117,7 +120,7 @@ public class MovieViewModel extends AndroidViewModel {
     }
 
     public void fetchSearch(String search, int page) {
-        service.getMovies(search, page, local).enqueue(new Callback<Movie>() {
+        service.getMovies(getApplication().getResources().getString(R.string.TMDB_API_KEY), search, page, local).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.body() != null) {
@@ -147,7 +150,7 @@ public class MovieViewModel extends AndroidViewModel {
                 Log.d(TAG, "cmy1: onResponse: " + response);
                 if (response.body() != null) {
                     if (currentPage == 1) {
-                        Log.d(TAG, "cmy2: onResponse: "+response.body().getResults());
+                        Log.d(TAG, "cmy2: onResponse: " + response.body().getResults());
                         results.setValue(response.body().getResults());
                     } else if (results.getValue() != null) {
                         List<Result> pageList = new ArrayList<>();
@@ -168,16 +171,16 @@ public class MovieViewModel extends AndroidViewModel {
 
         switch (id) {
             case "popular":
-                service.getPopularMovies(page, local).enqueue(callback);
+                service.getPopularMovies(getApplication().getResources().getString(R.string.TMDB_API_KEY), page, local).enqueue(callback);
                 break;
             case "now":
-                service.getNowMovies(page, local).enqueue(callback);
+                service.getNowMovies(getApplication().getResources().getString(R.string.TMDB_API_KEY), page, local).enqueue(callback);
                 break;
             case "top":
-                service.getTopMovies(page, local).enqueue(callback);
+                service.getTopMovies(getApplication().getResources().getString(R.string.TMDB_API_KEY), page, local).enqueue(callback);
                 break;
             case "upcoming":
-                service.getUpcomingMovies(page, local).enqueue(callback);
+                service.getUpcomingMovies(getApplication().getResources().getString(R.string.TMDB_API_KEY), page, local).enqueue(callback);
                 break;
         }
 
